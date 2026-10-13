@@ -1,9 +1,7 @@
 package com.omnicart.user.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.Instant;
 import java.util.List;
@@ -16,6 +14,8 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
@@ -38,16 +38,19 @@ public class User extends BaseEntity {
     @Column(name = "phone_number_verified_at")
     private Instant phoneNumberVerifiedAt;
 
+    @Column(name = "is_active")
+    private boolean isActive;
+
     @Column(name = "password_hash")
     private String passwordHash;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Address> addresses;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserRole> userRoles;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserSession> userSessions;
 
     @Column(name = "created_at")
