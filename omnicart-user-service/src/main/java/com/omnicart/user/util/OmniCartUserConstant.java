@@ -6,6 +6,17 @@ package com.omnicart.user.util;
  */
 public class OmniCartUserConstant {
 
-    /* Error Codes */
+    public static String ERROR_CODE = "OMNI_USER_%s_%s";
 
+    /* Request level Error Codes */
+    public static String REQUEST_EXCEPTION_TAG = "REQ";
+    public static String REQUIRED_FIELD_ERROR_CODE = "1001";
+    public static String SESSION_TIMEOUT_ERROR_CODE = "1002";
+
+    /* Business exception level Error Codes */
+    public static String BUSINESS_EXCEPTION_TAG = "BUS";
+    public static String USER_ALREADY_REGISTERED_ERROR_CODE = "2001";
+    public static String INCORRECT_CREDENTIALS_ERROR_CODE = "2002";
+
+    /* Microservice level Error Codes */
 }

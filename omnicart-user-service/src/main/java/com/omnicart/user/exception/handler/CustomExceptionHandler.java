@@ -1,5 +1,6 @@
 package com.omnicart.user.exception.handler;
 
+import com.omnicart.user.dto.response.NotificationDto;
 import com.omnicart.user.exception.RequiredFieldNotFoundException;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class CustomExceptionHandler {
 
     @ExceptionHandler(value = RequiredFieldNotFoundException.class)
-    public ResponseEntity<String> handleException(RequiredFieldNotFoundException exception) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    public ResponseEntity<NotificationDto> handleException(RequiredFieldNotFoundException exception) {
+        NotificationDto notificationDto = NotificationDto.builder()
+                .status(HttpStatus.BAD_REQUEST.toString())
+                .message(exception.getMessage())
+                .errorCode(exception.getErrorCode())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(notificationDto);
     }
 }

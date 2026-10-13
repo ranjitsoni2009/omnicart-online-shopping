@@ -1,5 +1,7 @@
 package com.omnicart.user.exception;
 
+import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -7,9 +9,13 @@ import lombok.RequiredArgsConstructor;
  * Author: ranjitsoni2009@gmail.com
  */
 
+@Getter
 public class RequiredFieldNotFoundException extends Exception {
 
-    public RequiredFieldNotFoundException(String message) {
-        super(message);
+    private final String errorCode;
+
+    public RequiredFieldNotFoundException(String errorMessage, String errorCode) {
+        super(errorMessage);
+        this.errorCode = errorCode;
     }
 }

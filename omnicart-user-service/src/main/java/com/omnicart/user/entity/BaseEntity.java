@@ -1,6 +1,9 @@
 package com.omnicart.user.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.Instant;
 
@@ -9,7 +12,8 @@ import java.time.Instant;
  * Author: ranjitsoni2009@gmail.com
  */
 
-@Entity
+@Getter
+@Setter
 @MappedSuperclass
 public class BaseEntity {
 
