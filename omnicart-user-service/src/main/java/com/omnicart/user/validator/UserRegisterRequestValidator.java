@@ -33,15 +33,15 @@ public class UserRegisterRequestValidator {
                     OmniCartUtil.getErrorCode(OmniCartUserConstant.REQUEST_EXCEPTION_TAG, OmniCartUserConstant.REQUIRED_FIELD_ERROR_CODE));
         }
 
-        if (!StringUtils.hasText(userRegisterRequestDto.getEmail())) {
+        if (!StringUtils.hasText(userRegisterRequestDto.getEmailId())) {
             throw new RequiredFieldNotFoundException(
-                    "Email not found",
+                    "Email-Id not found",
                     OmniCartUtil.getErrorCode(OmniCartUserConstant.REQUEST_EXCEPTION_TAG, OmniCartUserConstant.REQUIRED_FIELD_ERROR_CODE));
         }
 
-        if (!StringUtils.hasText(userRegisterRequestDto.getMobile())) {
+        if (!StringUtils.hasText(userRegisterRequestDto.getPhoneNumber())) {
             throw new RequiredFieldNotFoundException(
-                    "Mobile number not found",
+                    "Phone number not found",
                     OmniCartUtil.getErrorCode(OmniCartUserConstant.REQUEST_EXCEPTION_TAG, OmniCartUserConstant.REQUIRED_FIELD_ERROR_CODE));
         }
     }

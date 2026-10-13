@@ -2,8 +2,12 @@ package com.omnicart.user.controller;
 
 import com.omnicart.user.dto.request.UserRegisterRequestDto;
 import com.omnicart.user.dto.response.UserRegisterResponseDto;
+import com.omnicart.user.exception.CustomBusinessException;
 import com.omnicart.user.exception.RequiredFieldNotFoundException;
+import com.omnicart.user.service.IUserService;
 import com.omnicart.user.validator.UserRegisterRequestValidator;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,21 +20,16 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping(value = "/api/users")
+@RequestMapping("/api/users")
+@AllArgsConstructor
 public class UserController {
 
+    private IUserService userService;
 
-    @PostMapping(value = "/register")
-    public ResponseEntity<UserRegisterResponseDto> register(@RequestBody UserRegisterRequestDto userRegisterRequestDto) throws RequiredFieldNotFoundException {
-
+    @PostMapping("/register")
+    public ResponseEntity<UserRegisterResponseDto> register(@RequestBody UserRegisterRequestDto userRegisterRequestDto) throws Exception {
         UserRegisterRequestValidator.validateRequiredField(userRegisterRequestDto);
-
-        UserRegisterResponseDto userRegisterResponseDto = UserRegisterResponseDto.builder()
-                .firstName(userRegisterRequestDto.getFirstName())
-                .lastName(userRegisterRequestDto.getLastName())
-                .email(userRegisterRequestDto.getEmail())
-                .mobile(userRegisterRequestDto.getMobile())
-                .build();
+        UserRegisterResponseDto userRegisterResponseDto = userService.register(userRegisterRequestDto);
         return ResponseEntity.ok(userRegisterResponseDto);
     }
 

@@ -13,10 +13,12 @@ public class OmniCartUserConstant {
     public static String REQUIRED_FIELD_ERROR_CODE = "1001";
     public static String SESSION_TIMEOUT_ERROR_CODE = "1002";
 
-    /* Business exception level Error Codes */
+    /* Business exception level Error Codes & Message */
     public static String BUSINESS_EXCEPTION_TAG = "BUS";
     public static String USER_ALREADY_REGISTERED_ERROR_CODE = "2001";
     public static String INCORRECT_CREDENTIALS_ERROR_CODE = "2002";
+
+    public static String USER_ALREADY_REGISTERED_ERROR_MSG = "User already registered with given request";
 
     /* Microservice level Error Codes */
 }

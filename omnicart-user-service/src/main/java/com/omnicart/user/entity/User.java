@@ -1,6 +1,7 @@
 package com.omnicart.user.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
@@ -24,17 +26,17 @@ public class User extends BaseEntity {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "mobile")
-    private String mobile;
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
-    @Column(name = "email")
-    private String email;
+    @Column(name = "email_id")
+    private String emailId;
 
-    @Column(name = "email_verified_at")
-    private Instant emailVerifiedAt;
+    @Column(name = "email_id_verified_at")
+    private Instant emailIdVerifiedAt;
 
-    @Column(name = "mobile_verified_at")
-    private Instant mobileVerifiedAt;
+    @Column(name = "phone_number_verified_at")
+    private Instant phoneNumberVerifiedAt;
 
     @Column(name = "password_hash")
     private String passwordHash;

@@ -12,7 +12,7 @@ public class UserRegisterRequestDto {
 
     private String firstName;
     private String lastName;
-    private String email;
-    private String mobile;
+    private String emailId;
+    private String phoneNumber;
     private String password;
 }
