@@ -21,6 +21,7 @@ public class UserAdapter {
                 .lastName(userRegisterRequestDto.getLastName())
                 .passwordHash(hashedPassword)
                 .emailId(userRegisterRequestDto.getEmailId())
+                .isActive(true) //default until functionality added to make active externally
                 .phoneNumber(userRegisterRequestDto.getPhoneNumber())
                 .createdAt(Instant.now(Clock.systemDefaultZone()))
                 .updatedAt(Instant.now(Clock.systemDefaultZone()))

@@ -1,6 +1,7 @@
 package com.omnicart.user.dto.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -8,9 +9,13 @@ import lombok.Data;
  * Author: ranjitsoni2009@gmail.com
  */
 @Data
+@Builder
 @AllArgsConstructor
 public class LoginResponseDto {
 
-    private String token;
+    private String accessToken;
+    private String tokenType;
+    private int expireIn;
+    private String refreshToken;
 
 }

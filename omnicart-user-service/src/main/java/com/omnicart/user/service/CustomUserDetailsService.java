@@ -1,11 +1,13 @@
 package com.omnicart.user.service;
 
+import com.omnicart.user.entity.CustomUserDetails;
 import com.omnicart.user.entity.Role;
 import com.omnicart.user.entity.User;
 import com.omnicart.user.entity.UserRole;
 import com.omnicart.user.repo.IUserRepo;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -45,12 +47,14 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepo.findByEmailIdOrPhoneNumber(username, username)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found"));
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getEmailId())
-                .password(user.getPasswordHash())
-                .authorities(loadAuthorities(user))
-                .disabled(user.isActive())
-                .build();
+
+        return new CustomUserDetails(
+                user.getId(),
+                user.getEmailId(),
+                user.getPasswordHash(),
+                loadAuthorities(user),
+                user.isActive(),
+                user.isActive());
     }
 
     /**

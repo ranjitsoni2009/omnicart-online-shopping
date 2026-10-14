@@ -12,5 +12,14 @@ logging:
   level:
     org.springframework.security: ERROR
 
+omnicart:
+  security:
+    jwt:
+      issuer: https://auth.omnicart.example
+      audience: omnicart-api
+      access-token-ttl: 600000
+      active-key-id: omnicart-key-1
+      private-key-location: ${JWT_PRIVATE_KEY_LOCATION}
+
 
 

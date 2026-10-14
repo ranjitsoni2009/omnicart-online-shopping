@@ -2,6 +2,7 @@ package com.omnicart.user.controller;
 
 import com.omnicart.user.dto.request.LoginRequestDto;
 import com.omnicart.user.dto.response.LoginResponseDto;
+import com.omnicart.user.exception.CustomBusinessException;
 import com.omnicart.user.service.AuthService;
 import com.omnicart.user.service.IAuthService;
 import lombok.AllArgsConstructor;
@@ -24,15 +25,15 @@ public class AuthController {
     private IAuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) throws CustomBusinessException {
 
         LoginResponseDto loginResponseDto = authService.login(loginRequestDto);
 
         return ResponseEntity.ok(loginResponseDto);
     }
 
-/*
-    @PostMapping(value = "/login")
+    /*
+    @PostMapping(value = "/logout")
     public ResponseEntity<LoginResponseDto> logout() {
         LoginResponseDto loginResponseDto = new LoginResponseDto(null);
         return ResponseEntity.ok(loginResponseDto);
