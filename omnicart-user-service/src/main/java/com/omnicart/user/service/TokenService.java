@@ -2,20 +2,13 @@ package com.omnicart.user.service;
 
 import com.omnicart.user.config.JwtProperties;
 import com.omnicart.user.entity.CustomUserDetails;
-import com.omnicart.user.entity.User;
-import com.omnicart.user.exception.CustomBusinessException;
 import com.omnicart.user.repo.IUserRepo;
-import com.omnicart.user.util.OmniCartUserConstant;
-import com.omnicart.user.util.OmniCartUtil;
-import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.PrivateKey;
-import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -48,7 +41,7 @@ public class TokenService implements ITokenService {
                 .header().keyId(properties.getActiveKeyId())
                     .and()
                 .issuer(properties.getIssuer())
-                .subject("USER_"+customUserDetails.getUserId())
+                .subject(String.valueOf(customUserDetails.getUserId()))
                 .audience().add(properties.getAudience())
                     .and()
                 .issuedAt(currentTime)
