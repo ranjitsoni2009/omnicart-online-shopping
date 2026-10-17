@@ -1,16 +1,14 @@
-package com.omnicart.user.service;
+package com.omnicart.user.service.impl;
 
 import com.omnicart.user.entity.CustomUserDetails;
 import com.omnicart.user.entity.Role;
 import com.omnicart.user.entity.User;
 import com.omnicart.user.entity.UserRole;
 import com.omnicart.user.repo.IUserRepo;
+import com.omnicart.user.service.ICustomUserDetailsService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -25,7 +23,7 @@ import java.util.stream.Stream;
  */
 @Service
 @AllArgsConstructor
-public class CustomUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsServiceImpl implements ICustomUserDetailsService {
 
     private IUserRepo userRepo;
 

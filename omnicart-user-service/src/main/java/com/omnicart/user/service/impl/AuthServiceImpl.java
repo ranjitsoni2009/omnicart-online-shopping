@@ -1,22 +1,23 @@
-package com.omnicart.user.service;
+package com.omnicart.user.service.impl;
 
 import com.omnicart.user.dto.request.LoginRequestDto;
 import com.omnicart.user.dto.response.LoginResponseDto;
-import com.omnicart.user.dto.response.TokenResponseDto;
 
 import com.omnicart.user.entity.CustomUserDetails;
-import com.omnicart.user.entity.UserSession;
 import com.omnicart.user.exception.CustomBusinessException;
+import com.omnicart.user.service.IAuthService;
+import com.omnicart.user.service.IRefreshTokenService;
+import com.omnicart.user.service.ITokenService;
+import com.omnicart.user.service.IUserSessionService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.attribute.UserPrincipal;
+import java.time.Duration;
 import java.time.Instant;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -25,10 +26,12 @@ import java.util.Objects;
  */
 @Service
 @AllArgsConstructor
-public class AuthService implements IAuthService {
+public class AuthServiceImpl implements IAuthService {
 
     private AuthenticationManager authenticationManager;
     private ITokenService tokenService;
+    private IRefreshTokenService refreshTokenService;
+    private IUserSessionService userSessionService;
 
     /**
      * @return TokenResponseDto
@@ -41,18 +44,27 @@ public class AuthService implements IAuthService {
                         loginRequestDto.getUsername(), loginRequestDto.getPassword()));
 
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        if (Objects.isNull(customUserDetails)) {
+            throw new RuntimeException(("customUserDetails is null"));
+        }
+        Date currentTime = new Date();
+        String token = tokenService.generateToken(customUserDetails, currentTime);
 
-        String token = tokenService.generateToken(customUserDetails);
+        String refreshToken =
+                refreshTokenService.generateRefreshToken();
+
+        String refreshTokenHash =
+                refreshTokenService.hashRefreshToken(refreshToken);
+
+        Instant expiresAt = Instant.now().plus(Duration.ofDays(7));
+
+        userSessionService.createUserSession(customUserDetails.getUserId(), refreshTokenHash, loginRequestDto.getUsername(), expiresAt, null, null);
 
         return LoginResponseDto.builder()
                 .accessToken(token)
                 .expireIn(600000)
                 .tokenType("Bearer")
+                .refreshToken(refreshToken)
                 .build();
-    }
-
-
-    public String createToken(User user, Instant issuedAt, Instant expireAt) {
-        return null;
     }
 }

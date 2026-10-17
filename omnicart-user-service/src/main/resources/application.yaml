@@ -20,6 +20,8 @@ omnicart:
       access-token-ttl: 600000
       active-key-id: omnicart-key-1
       private-key-location: ${JWT_PRIVATE_KEY_LOCATION}
+      refresh-token-bytes: 32
+      refresh-token-expiry: 7d
 
 
 

@@ -1,4 +1,4 @@
-package com.omnicart.user.service;
+package com.omnicart.user.service.impl;
 
 import com.omnicart.user.adapter.UserAdapter;
 import com.omnicart.user.dto.request.UserRegisterRequestDto;
@@ -6,11 +6,10 @@ import com.omnicart.user.dto.response.UserRegisterResponseDto;
 import com.omnicart.user.entity.User;
 import com.omnicart.user.exception.CustomBusinessException;
 import com.omnicart.user.repo.IUserRepo;
+import com.omnicart.user.service.IUserService;
 import com.omnicart.user.util.OmniCartUserConstant;
 import com.omnicart.user.util.OmniCartUtil;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
