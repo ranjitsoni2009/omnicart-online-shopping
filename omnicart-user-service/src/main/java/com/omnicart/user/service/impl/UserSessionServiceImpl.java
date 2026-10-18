@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Created by Ranjit Soni on 16-10-2026.
@@ -44,8 +45,46 @@ public class UserSessionServiceImpl implements IUserSessionService {
                 .expiredAt(currentTime.plus(2, ChronoUnit.DAYS))
                 .deviceInfo(deviceInfo)
                 .ipAddress(ipAddress)
+                .createdAt(Instant.now())
+                .updatedAt(Instant.now())
                 .build();
 
         userSessionRepo.save(userSession);
+    }
+
+    @Override
+    public UserSession getUserSession(String refreshTokenHash) throws CustomBusinessException {
+        return userSessionRepo.findByRefreshTokenHash(refreshTokenHash)
+                .orElseThrow(() -> new CustomBusinessException(
+                        OmniCartUserConstant.BUSINESS_EXCEPTION_TAG,
+                        OmniCartUtil.getErrorCode(OmniCartUserConstant.USER_SESSION_NOT_FOUND, OmniCartUserConstant.USER_SESSION_NOT_FOUND_ERROR_CODE)));
+    }
+
+    @Override
+    public String validateAndReturnUserName(String refreshTokenHash) throws CustomBusinessException {
+        Optional<UserSession> optionalUserSession = userSessionRepo.findByRefreshTokenHash(refreshTokenHash);
+
+        if (optionalUserSession.isEmpty()
+                || !Objects.isNull(optionalUserSession.get().getLoggedOutAt())
+                || !Objects.isNull(optionalUserSession.get().getRevokedAt())) {
+            throw new CustomBusinessException(
+                    OmniCartUserConstant.BUSINESS_EXCEPTION_TAG,
+                    OmniCartUtil.getErrorCode(OmniCartUserConstant.INVALID_SESSION, OmniCartUserConstant.INVALID_SESSION_ERROR_CODE));
+        }
+
+        UserSession userSession = optionalUserSession.get();
+        Instant expiredAt = userSession.getExpiredAt();
+        if (Instant.now().isAfter(expiredAt)) {
+            Instant currentTime = Instant.now();
+            userSession.setRevokedAt(currentTime);
+            userSession.setUpdatedAt(currentTime);
+            userSessionRepo.save(userSession);
+
+            throw new CustomBusinessException(
+                    OmniCartUserConstant.BUSINESS_EXCEPTION_TAG,
+                    OmniCartUtil.getErrorCode(OmniCartUserConstant.INVALID_SESSION, OmniCartUserConstant.INVALID_SESSION_ERROR_CODE));
+        }
+
+        return userSession.getLoginIdentifier();
     }
 }

@@ -6,6 +6,7 @@ package com.omnicart.user.util;
  */
 public class OmniCartUserConstant {
 
+    public static final String BEARER = "Bearer";
     public static String ERROR_CODE = "OMNI_USER_%s_%s";
 
     /* Request level Error Codes */
@@ -18,9 +19,13 @@ public class OmniCartUserConstant {
     public static String USER_ALREADY_REGISTERED_ERROR_CODE = "2001";
     public static String INCORRECT_CREDENTIALS_ERROR_CODE = "2002";
     public static String USER_NOT_FOUND_ERROR_CODE = "2003";
+    public static String USER_SESSION_NOT_FOUND_ERROR_CODE = "2004";
+    public static String INVALID_SESSION_ERROR_CODE = "2005";
 
     public static String USER_ALREADY_REGISTERED_ERROR_MSG = "User already registered with given request";
     public static String USER_NOT_FOUND = "User not found";
+    public static String USER_SESSION_NOT_FOUND = "User Session not found";
+    public static String INVALID_SESSION = "Invalid Session";
 
     /* Microservice level Error Codes */
 }

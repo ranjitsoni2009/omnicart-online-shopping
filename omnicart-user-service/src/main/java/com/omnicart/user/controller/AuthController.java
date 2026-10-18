@@ -1,10 +1,11 @@
 package com.omnicart.user.controller;
 
 import com.omnicart.user.dto.request.LoginRequestDto;
-import com.omnicart.user.dto.response.LoginResponseDto;
+import com.omnicart.user.dto.response.TokenResponseDto;
 import com.omnicart.user.exception.CustomBusinessException;
 import com.omnicart.user.service.IAuthService;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,17 +21,15 @@ public class AuthController {
     private IAuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) throws CustomBusinessException {
-
-        LoginResponseDto loginResponseDto = authService.login(loginRequestDto);
-
+    public ResponseEntity<TokenResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) throws CustomBusinessException {
+        TokenResponseDto loginResponseDto = authService.login(loginRequestDto);
         return ResponseEntity.ok(loginResponseDto);
     }
 
-    /*
-    @PostMapping(value = "/logout")
-    public ResponseEntity<LoginResponseDto> logout() {
-        LoginResponseDto loginResponseDto = new LoginResponseDto(null);
+
+    @PostMapping("/refresh-access-token")
+    public ResponseEntity<TokenResponseDto> refreshAccessToken(@NonNull @RequestHeader("refresh-token") String refreshToken) throws CustomBusinessException {
+        TokenResponseDto loginResponseDto = authService.refreshAccessToken(refreshToken);
         return ResponseEntity.ok(loginResponseDto);
-    }*/
+    }
 }
