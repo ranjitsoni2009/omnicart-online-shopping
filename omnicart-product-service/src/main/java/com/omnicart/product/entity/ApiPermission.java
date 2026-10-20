@@ -1,11 +1,11 @@
-package com.omnicart.user.entity;
+package com.omnicart.product.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Created by Ranjit Soni on 13-10-2026.
+ * Created by Ranjit Soni on 20-10-2026.
  * Author: ranjitsoni2009@gmail.com
  */
 
@@ -21,9 +21,8 @@ public class ApiPermission extends BaseEntity {
     @Column(name = "url_pattern")
     private String urlPattern;
 
-    @OneToOne
-    @JoinColumn(name = "permission_id", referencedColumnName = "id")
-    private Permission permission;
+    @Column(name = "permission_code")
+    private String permissionCode;
 
     @Column(name = "is_active")
     private boolean isActive;

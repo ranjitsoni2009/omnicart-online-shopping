@@ -1,3 +1,15 @@
 spring:
   application:
     name: omnicart-product-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: classpath:keys/public_key.pem
+
+omnicart:
+  security:
+    jwt:
+      issuer: https://auth.omnicart.example
+      audience: omnicart-product-service
+
