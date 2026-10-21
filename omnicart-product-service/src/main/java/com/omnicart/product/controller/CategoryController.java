@@ -1,8 +1,7 @@
 package com.omnicart.product.controller;
 
-import com.omnicart.product.dto.CategoryResponseDto;
-import com.omnicart.product.dto.CreateCategoryRequestDto;
-import jakarta.validation.Valid;
+import com.omnicart.product.dto.response.CategoryResponseDto;
+import com.omnicart.product.dto.request.CreateCategoryRequestDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;

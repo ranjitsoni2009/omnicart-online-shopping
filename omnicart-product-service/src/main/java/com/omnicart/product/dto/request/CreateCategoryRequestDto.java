@@ -1,10 +1,6 @@
-package com.omnicart.product.dto;
+package com.omnicart.product.dto.request;
 
-import com.omnicart.product.dto.validation.OnUpdate;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-
-import java.util.List;
 
 /**
  * Created by Ranjit Soni on 19-10-2026.

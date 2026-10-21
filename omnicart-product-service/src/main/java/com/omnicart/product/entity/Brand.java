@@ -1,10 +1,10 @@
 package com.omnicart.product.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 /**
  * Created by Ranjit Soni on 20-10-2026.
@@ -22,4 +22,7 @@ public class Brand extends BaseEntity {
 
     @Column(name = "is_active")
     private boolean isActive;
+
+    @ManyToMany(mappedBy = "brands", fetch = FetchType.LAZY)
+    private List<Category> categories;
 }

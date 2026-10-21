@@ -25,4 +25,10 @@ public class Category extends BaseEntity {
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Product> products;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "category_brands"
+            , joinColumns = @JoinColumn(name = "category_id")
+            , inverseJoinColumns = @JoinColumn(name = "brand_id"))
+    private List<Brand> brands;
 }

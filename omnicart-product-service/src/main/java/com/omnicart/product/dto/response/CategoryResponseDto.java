@@ -1,4 +1,4 @@
-package com.omnicart.product.dto;
+package com.omnicart.product.dto.response;
 
 /**
  * Created by Ranjit Soni on 19-10-2026.
