@@ -41,7 +41,7 @@ public class TokenServiceImpl implements ITokenService {
                     .and()
                 .issuer(properties.getIssuer())
                 .subject(String.valueOf(customUserDetails.getUserId()))
-                .audience().add(properties.getAudience())
+                .audience().add(properties.getAudiences())
                     .and()
                 .issuedAt(currentTime)
                 .expiration(expiryTime)

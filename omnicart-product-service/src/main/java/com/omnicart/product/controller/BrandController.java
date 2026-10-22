@@ -37,19 +37,19 @@ public class BrandController {
     }
 
     @PreAuthorize("hasAuthority('READ_BRAND')")
-    @GetMapping
+    @GetMapping("/{pageNumber}/{pageSize}")
     public ResponseEntity<BrandResponseDto> getBrands(@PathVariable("pageNumber") int pageNumber, @PathVariable("pageSize") int pageSize) {
         return  null;
     }
 
     @PreAuthorize("hasAuthority('READ_BRAND')")
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<BrandResponseDto> getBrandById(@PathVariable("id") Long brandId) {
         return  null;
     }
 
     @PreAuthorize("hasAuthority('DELETE_BRAND')")
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<BrandResponseDto> deleteBrandById(@PathVariable("id") Long brandId) {
         return  null;
     }

@@ -16,8 +16,7 @@ omnicart:
   security:
     jwt:
       issuer: https://auth.omnicart.example
-      audiences:
-        - omnicart-product-service
+      audiences: omnicart-product-service
       access-token-ttl: 600000
       active-key-id: omnicart-key-1
       private-key-location: ${JWT_PRIVATE_KEY_LOCATION}

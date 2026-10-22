@@ -19,7 +19,7 @@ public class JwtProperties {
 
 
     private String issuer;
-    private String audience;
+    private String audiences;
     private String accessTokenTtl;
     private String activeKeyId;
 

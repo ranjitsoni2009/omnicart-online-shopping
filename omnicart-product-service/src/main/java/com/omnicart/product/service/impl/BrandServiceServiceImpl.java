@@ -30,7 +30,7 @@ public class BrandServiceServiceImpl implements IBrandService {
     @Override
     public BrandResponseDto createBrand(CreateBrandRequestDto createBrandRequestDto) throws CustomBusinessException {
 
-        Optional<Brand> optionalBrand = brandRepo.findByName(createBrandRequestDto.getBrandName());
+        Optional<Brand> optionalBrand = brandRepo.findByName(createBrandRequestDto.getName());
         if (optionalBrand.isPresent()) {
             throw new CustomBusinessException(
                     OmniCartProductConstant.BRAND_ALREADY_EXIST_ERROR_MSG,

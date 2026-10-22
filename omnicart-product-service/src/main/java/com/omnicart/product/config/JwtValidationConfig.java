@@ -33,7 +33,6 @@ import java.util.List;
  * Author: ranjitsoni2009@gmail.com
  */
 @Configuration
-@EnableWebSecurity
 public class JwtValidationConfig {
 
     @Bean
@@ -68,24 +67,5 @@ public class JwtValidationConfig {
 
         decoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(issuerValidator, audienceValidator));
         return decoder;
-    }
-
-    @Bean
-    SecurityFilterChain securityFilterChain(
-            HttpSecurity http,
-            JwtAuthoritiesConverter authoritiesConverter) {
-
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/actuator/health")
-                            .permitAll()
-                        .anyRequest()
-                            .authenticated()
-                )
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(authoritiesConverter)))
-                .build();
     }
 }

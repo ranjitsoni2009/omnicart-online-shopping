@@ -1,6 +1,11 @@
 spring:
   application:
     name: omnicart-product-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/omnicart_product_db?useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
   security:
     oauth2:
       resourceserver:

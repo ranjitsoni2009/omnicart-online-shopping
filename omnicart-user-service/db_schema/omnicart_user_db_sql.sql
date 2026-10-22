@@ -14,6 +14,11 @@ insert into permissions(permission_code, description, created_at, updated_at) va
 insert into permissions(permission_code, description, created_at, updated_at) values('UPDATE_PRODUCT', 'Update Product Permission', current_timestamp(), current_timestamp());
 insert into permissions(permission_code, description, created_at, updated_at) values('DELETE_PRODUCT', 'Delete Product Permission', current_timestamp(), current_timestamp());
 insert into permissions(permission_code, description, created_at, updated_at) values('GET_PRODUCT', 'Get Product Permission', current_timestamp(), current_timestamp());
+
+insert into permissions(permission_code, description, created_at, updated_at) values('CREATE_BRAND', 'Create Brand Permission', current_timestamp(), current_timestamp());
+insert into permissions(permission_code, description, created_at, updated_at) values('UPDATE_BRAND', 'Update Brand Permission', current_timestamp(), current_timestamp());
+insert into permissions(permission_code, description, created_at, updated_at) values('DELETE_BRAND', 'Delete Brand Permission', current_timestamp(), current_timestamp());
+insert into permissions(permission_code, description, created_at, updated_at) values('READ_BRAND', 'Get Brand Permission', current_timestamp(), current_timestamp());
 */
 
 
@@ -32,6 +37,12 @@ insert into role_permissions(role_id, permission_id, created_at, updated_at) val
 insert into role_permissions(role_id, permission_id, created_at, updated_at) values(1, 2, current_timestamp(), current_time());
 insert into role_permissions(role_id, permission_id, created_at, updated_at) values(1, 3, current_timestamp(), current_time());
 insert into role_permissions(role_id, permission_id, created_at, updated_at) values(1, 4, current_timestamp(), current_time());
+
+insert into role_permissions(role_id, permission_id, created_at, updated_at) values(1, 5, current_timestamp(), current_time());
+insert into role_permissions(role_id, permission_id, created_at, updated_at) values(1, 6, current_timestamp(), current_time());
+insert into role_permissions(role_id, permission_id, created_at, updated_at) values(1, 7, current_timestamp(), current_time());
+insert into role_permissions(role_id, permission_id, created_at, updated_at) values(1, 8, current_timestamp(), current_time());
+
 insert into role_permissions(role_id, permission_id, created_at, updated_at) values(2, 2, current_timestamp(), current_time());
 */
 

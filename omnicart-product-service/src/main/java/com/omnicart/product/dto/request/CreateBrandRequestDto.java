@@ -13,5 +13,5 @@ import lombok.Setter;
 public class CreateBrandRequestDto {
 
     @NotNull(message = "BrandName is not available")
-    private String brandName;
+    private String name;
 }

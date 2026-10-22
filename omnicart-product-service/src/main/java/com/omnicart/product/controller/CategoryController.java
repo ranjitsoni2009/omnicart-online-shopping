@@ -29,19 +29,19 @@ public class CategoryController {
     }
 
     @PreAuthorize("hasAuthority('READ_CATEGORY')")
-    @GetMapping
+    @GetMapping("/{pageNumber}/{pageSize}")
     public ResponseEntity<CategoryResponseDto> getCategories(@PathVariable("pageNumber") int pageNumber, @PathVariable("pageSize") int pageSize) {
         return  null;
     }
 
     @PreAuthorize("hasAuthority('READ_CATEGORY')")
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<CategoryResponseDto> getCategoryById(@PathVariable("id") Long categoryId) {
         return  null;
     }
 
     @PreAuthorize("hasAuthority('DELETE_CATEGORY')")
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<CategoryResponseDto> deleteCategoryById(@PathVariable("id") Long categoryId) {
         return  null;
     }
