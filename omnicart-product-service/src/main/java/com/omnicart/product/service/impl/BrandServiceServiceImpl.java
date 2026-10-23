@@ -11,10 +11,14 @@ import com.omnicart.product.mapper.GenericMapper;
 import com.omnicart.product.util.OmniCartProductConstant;
 import com.omnicart.product.util.OmniCartProductUtil;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by Ranjit Soni on 21-10-2026.
@@ -39,27 +43,49 @@ public class BrandServiceServiceImpl implements IBrandService {
         }
 
         Brand brand = genericMapper.toEntity(createBrandRequestDto, Brand.class);
+        brand.setActive(true);
         brand = brandRepo.save(brand);
         return genericMapper.toDto(brand, BrandResponseDto.class);
     }
 
     @Override
-    public BrandResponseDto updateBrand(UpdateBrandRequestDto updateBrandRequestDto) {
-        return null;
+    public BrandResponseDto updateBrand(UpdateBrandRequestDto updateBrandRequestDto) throws CustomBusinessException {
+        Brand brand = getBrandById(updateBrandRequestDto.getId());
+        brand = genericMapper.toEntity(updateBrandRequestDto, brand, "id");
+        brand = brandRepo.save(brand);
+        return genericMapper.toDto(brand, BrandResponseDto.class);
     }
 
     @Override
     public List<BrandResponseDto> getBrands(int pageNumber, int pageSize) {
-        return List.of();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Brand> page = brandRepo.findAllByIsActive(true, pageable);
+        List<Brand> brands = page.getContent();
+        return brands.stream()
+                .map(brand ->
+                        genericMapper.toDto(brand, BrandResponseDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public BrandResponseDto getBrand(long brandId) {
-        return null;
+    public BrandResponseDto getBrand(long brandId) throws CustomBusinessException {
+        Brand brand = getBrandById(brandId);
+        return genericMapper.toDto(brand, BrandResponseDto.class);
     }
 
     @Override
-    public void deleteBrand(long brandId) {
+    public void deleteBrand(long brandId) throws CustomBusinessException {
+        Brand brand = getBrandById(brandId);
+        brand.setActive(false);
+        brandRepo.save(brand);
+    }
 
+    private Brand getBrandById(long brandId) throws CustomBusinessException {
+        return brandRepo.findById(brandId)
+                .orElseThrow(() ->
+                        new CustomBusinessException(
+                                OmniCartProductConstant.BRAND_NOT_FOUND,
+                                OmniCartProductUtil.getErrorCode(
+                                        OmniCartProductConstant.BUSINESS_EXCEPTION_TAG, OmniCartProductConstant.BRAND_NOT_FOUND_ERROR_CODE)));
     }
 }

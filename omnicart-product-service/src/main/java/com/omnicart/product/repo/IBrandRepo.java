@@ -1,6 +1,8 @@
 package com.omnicart.product.repo;
 
 import com.omnicart.product.entity.Brand;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,4 +12,6 @@ import java.util.Optional;
 public interface IBrandRepo extends JpaRepository<Brand, Long> {
 
     Optional<Brand> findByName(String brandName);
+
+    Page<Brand> findAllByIsActive(boolean isActive, Pageable pageable);
 }

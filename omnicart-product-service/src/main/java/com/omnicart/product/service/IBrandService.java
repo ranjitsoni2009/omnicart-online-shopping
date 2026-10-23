@@ -15,12 +15,12 @@ public interface IBrandService {
 
     BrandResponseDto createBrand(CreateBrandRequestDto createBrandRequestDto) throws CustomBusinessException;
 
-    BrandResponseDto updateBrand(UpdateBrandRequestDto updateBrandRequestDto);
+    BrandResponseDto updateBrand(UpdateBrandRequestDto updateBrandRequestDto) throws CustomBusinessException;
 
     List<BrandResponseDto> getBrands(int pageNumber, int pageSize);
 
-    BrandResponseDto getBrand(long brandId);
+    BrandResponseDto getBrand(long brandId) throws CustomBusinessException;
 
-    void deleteBrand(long brandId);
+    void deleteBrand(long brandId) throws CustomBusinessException;
 
 }

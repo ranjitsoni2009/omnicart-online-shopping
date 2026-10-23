@@ -12,6 +12,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Created by Ranjit Soni on 19-10-2026.
  * Author: ranjitsoni2009@gmail.com
@@ -32,25 +34,29 @@ public class BrandController {
 
     @PreAuthorize("hasAuthority('UPDATE_BRAND')")
     @PutMapping
-    public ResponseEntity<BrandResponseDto> updateBrand(@Validated @RequestBody UpdateBrandRequestDto updateBrandRequestDto) {
-        return  null;
+    public ResponseEntity<BrandResponseDto> updateBrand(@Validated @RequestBody UpdateBrandRequestDto updateBrandRequestDto) throws CustomBusinessException {
+        BrandResponseDto brandResponseDto = brandService.updateBrand(updateBrandRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(brandResponseDto);
     }
 
     @PreAuthorize("hasAuthority('READ_BRAND')")
     @GetMapping("/{pageNumber}/{pageSize}")
-    public ResponseEntity<BrandResponseDto> getBrands(@PathVariable("pageNumber") int pageNumber, @PathVariable("pageSize") int pageSize) {
-        return  null;
+    public ResponseEntity<List<BrandResponseDto>> getBrands(@PathVariable("pageNumber") int pageNumber, @PathVariable("pageSize") int pageSize) {
+        List<BrandResponseDto> brandResponseDtoList = brandService.getBrands(pageNumber, pageSize);
+        return ResponseEntity.status(HttpStatus.OK).body(brandResponseDtoList);
     }
 
     @PreAuthorize("hasAuthority('READ_BRAND')")
     @GetMapping("/{id}")
-    public ResponseEntity<BrandResponseDto> getBrandById(@PathVariable("id") Long brandId) {
-        return  null;
+    public ResponseEntity<BrandResponseDto> getBrandById(@PathVariable("id") Long brandId) throws CustomBusinessException {
+        BrandResponseDto brandResponseDto = brandService.getBrand(brandId);
+        return ResponseEntity.status(HttpStatus.OK).body(brandResponseDto);
     }
 
     @PreAuthorize("hasAuthority('DELETE_BRAND')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<BrandResponseDto> deleteBrandById(@PathVariable("id") Long brandId) {
-        return  null;
+    public ResponseEntity<BrandResponseDto> deleteBrandById(@PathVariable("id") Long brandId) throws CustomBusinessException {
+        brandService.deleteBrand(brandId);
+        return ResponseEntity.ok().build();
     }
 }

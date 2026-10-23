@@ -18,7 +18,7 @@ public class OmniCartProductConstant {
     public static String BUSINESS_EXCEPTION_TAG = "BUS";
     public static String BRAND_ALREADY_EXIST_ERROR_CODE = "3001";
     public static String INCORRECT_CREDENTIALS_ERROR_CODE = "3002";
-    public static String USER_NOT_FOUND_ERROR_CODE = "3003";
+    public static String BRAND_NOT_FOUND_ERROR_CODE = "3003";
     public static String USER_SESSION_NOT_FOUND_ERROR_CODE = "3004";
     public static String INVALID_SESSION_ERROR_CODE = "3005";
 

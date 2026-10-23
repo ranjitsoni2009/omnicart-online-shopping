@@ -34,7 +34,7 @@ public class TokenServiceImpl implements ITokenService {
                 .sorted()
                 .toList();
 
-        Date expiryTime = Date.from(currentTime.toInstant().plusSeconds(360));
+        Date expiryTime = Date.from(currentTime.toInstant().plusSeconds(360*60));
 
         return Jwts.builder()
                 .header().keyId(properties.getActiveKeyId())
