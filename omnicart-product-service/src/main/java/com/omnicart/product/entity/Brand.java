@@ -23,6 +23,6 @@ public class Brand extends BaseEntity {
     @Column(name = "is_active")
     private boolean isActive;
 
-    @ManyToMany(mappedBy = "brands", fetch = FetchType.LAZY)
-    private List<Category> categories;
+    @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
+    private List<CategoryBrand> categoryBrands;
 }

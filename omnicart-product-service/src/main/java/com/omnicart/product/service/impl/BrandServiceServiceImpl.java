@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -52,6 +53,8 @@ public class BrandServiceServiceImpl implements IBrandService {
     public BrandResponseDto updateBrand(UpdateBrandRequestDto updateBrandRequestDto) throws CustomBusinessException {
         Brand brand = getBrandById(updateBrandRequestDto.getId());
         brand = genericMapper.toEntity(updateBrandRequestDto, brand, "id");
+        brand.setUpdatedAt(Instant.now());
+        brand.setActive(true);
         brand = brandRepo.save(brand);
         return genericMapper.toDto(brand, BrandResponseDto.class);
     }
