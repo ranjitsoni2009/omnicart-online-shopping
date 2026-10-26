@@ -3,7 +3,9 @@ package com.omnicart.product.service.impl;
 import com.omnicart.product.dto.request.CreateProductVariantRequestDto;
 import com.omnicart.product.dto.request.UpdateProductVariantRequestDto;
 import com.omnicart.product.dto.response.ProductVariantResponseDto;
+import com.omnicart.product.repo.IProductVariantRepo;
 import com.omnicart.product.service.IProductVariantService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +15,10 @@ import java.util.List;
  * Author: ranjitsoni2009@gmail.com
  */
 @Service
+@RequiredArgsConstructor
 public class ProductVariantServiceServiceImpl implements IProductVariantService {
+
+    private final IProductVariantRepo productVariantRepo;
 
     @Override
     public ProductVariantResponseDto createProductVariant(CreateProductVariantRequestDto createProductVariantRequestDto) {
