@@ -45,6 +45,8 @@ public class BrandServiceServiceImpl implements IBrandService {
 
         Brand brand = genericMapper.toEntity(createBrandRequestDto, Brand.class);
         brand.setActive(true);
+        brand.setCreatedAt(Instant.now());
+        brand.setUpdatedAt(Instant.now());
         brand = brandRepo.save(brand);
         return genericMapper.toDto(brand, BrandResponseDto.class);
     }
@@ -83,7 +85,8 @@ public class BrandServiceServiceImpl implements IBrandService {
         brandRepo.save(brand);
     }
 
-    private Brand getBrandById(long brandId) throws CustomBusinessException {
+    @Override
+    public Brand getBrandById(long brandId) throws CustomBusinessException {
         return brandRepo.findById(brandId)
                 .orElseThrow(() ->
                         new CustomBusinessException(

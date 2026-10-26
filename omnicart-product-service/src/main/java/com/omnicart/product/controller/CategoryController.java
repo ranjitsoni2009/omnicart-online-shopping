@@ -58,6 +58,6 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     public ResponseEntity<CategoryResponseDto> deleteCategoryById(@PathVariable("id") long categoryId) throws CustomBusinessException {
         categoryService.deleteCategory(categoryId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

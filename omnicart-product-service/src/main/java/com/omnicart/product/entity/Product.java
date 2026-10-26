@@ -1,8 +1,11 @@
 package com.omnicart.product.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
@@ -13,6 +16,9 @@ import java.util.List;
 
 @Getter
 @Setter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "products")
 public class Product extends BaseEntity {
@@ -22,6 +28,9 @@ public class Product extends BaseEntity {
 
     @Column(name = "is_active")
     private boolean isActive;
+
+    @Column(name = "description")
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")

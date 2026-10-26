@@ -3,6 +3,7 @@ package com.omnicart.product.service;
 import com.omnicart.product.dto.request.CreateBrandRequestDto;
 import com.omnicart.product.dto.request.UpdateBrandRequestDto;
 import com.omnicart.product.dto.response.BrandResponseDto;
+import com.omnicart.product.entity.Brand;
 import com.omnicart.product.exception.CustomBusinessException;
 
 import java.util.List;
@@ -23,4 +24,5 @@ public interface IBrandService {
 
     void deleteBrand(long brandId) throws CustomBusinessException;
 
+    Brand getBrandById(long brandId) throws CustomBusinessException;
 }

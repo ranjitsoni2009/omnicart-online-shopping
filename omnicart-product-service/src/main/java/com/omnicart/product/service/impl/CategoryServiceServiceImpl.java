@@ -139,7 +139,8 @@ public class CategoryServiceServiceImpl implements ICategoryService {
         categoryRepo.save(category);
     }
 
-    private Category getCategoryById(Long categoryId) throws CustomBusinessException {
+    @Override
+    public Category getCategoryById(Long categoryId) throws CustomBusinessException {
         return categoryRepo.findById(categoryId)
                 .orElseThrow(() ->
                         new CustomBusinessException(

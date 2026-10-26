@@ -57,6 +57,6 @@ public class BrandController {
     @DeleteMapping("/{id}")
     public ResponseEntity<BrandResponseDto> deleteBrandById(@PathVariable("id") Long brandId) throws CustomBusinessException {
         brandService.deleteBrand(brandId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
