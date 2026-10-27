@@ -31,7 +31,7 @@ public class ProductVariantServiceServiceImpl implements IProductVariantService 
     }
 
     @Override
-    public List<ProductVariantResponseDto> getProductVariants(int pageNumber, int pageSize) {
+    public List<ProductVariantResponseDto> getProductVariants(long productId, int pageNumber, int pageSize) {
         return List.of();
     }
 

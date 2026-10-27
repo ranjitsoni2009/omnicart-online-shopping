@@ -13,7 +13,7 @@ public interface IProductVariantService {
 
     ProductVariantResponseDto updateProductVariant(UpdateProductVariantRequestDto updateProductVariantRequestDto);
 
-    List<ProductVariantResponseDto> getProductVariants(int pageNumber, int pageSize);
+    List<ProductVariantResponseDto> getProductVariants(long productId, int pageNumber, int pageSize);
 
     ProductVariantResponseDto getProductVariant(long ProductVariantId);
 

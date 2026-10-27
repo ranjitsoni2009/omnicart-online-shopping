@@ -56,7 +56,7 @@ public class CategoryController {
 
     @PreAuthorize("hasAuthority('DELETE_CATEGORY')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<CategoryResponseDto> deleteCategoryById(@PathVariable("id") long categoryId) throws CustomBusinessException {
+    public ResponseEntity<Void> deleteCategoryById(@PathVariable("id") long categoryId) throws CustomBusinessException {
         categoryService.deleteCategory(categoryId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

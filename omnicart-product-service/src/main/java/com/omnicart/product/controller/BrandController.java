@@ -55,7 +55,7 @@ public class BrandController {
 
     @PreAuthorize("hasAuthority('DELETE_BRAND')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<BrandResponseDto> deleteBrandById(@PathVariable("id") Long brandId) throws CustomBusinessException {
+    public ResponseEntity<Void> deleteBrandById(@PathVariable("id") Long brandId) throws CustomBusinessException {
         brandService.deleteBrand(brandId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

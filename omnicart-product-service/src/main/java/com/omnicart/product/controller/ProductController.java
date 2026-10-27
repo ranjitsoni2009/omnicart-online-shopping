@@ -48,7 +48,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ProductResponseDto> deleteProduct(@PathVariable("id") int id) throws CustomBusinessException {
+    public ResponseEntity<Void> deleteProduct(@PathVariable("id") int id) throws CustomBusinessException {
         productService.deleteProduct(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
