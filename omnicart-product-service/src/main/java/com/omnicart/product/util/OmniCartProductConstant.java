@@ -23,6 +23,8 @@ public class OmniCartProductConstant {
     public static String CATEGORY_NOT_FOUND_ERROR_CODE = "3004";
     public static String PRODUCT_ALREADY_EXIST_ERROR_CODE = "3003";
     public static String PRODUCT_NOT_FOUND_ERROR_CODE = "3004";
+    public static String PRODUCT_VARIANT_ALREADY_EXIST_ERROR_CODE = "3005";
+    public static String PRODUCT_VARIANT_NOT_FOUND_ERROR_CODE = "3006";
 
     public static String BRAND_ALREADY_EXIST_ERROR_MSG = "Brand already exist";
     public static String BRAND_NOT_FOUND = "Brand not found";
@@ -30,6 +32,9 @@ public class OmniCartProductConstant {
     public static String CATEGORY_NOT_FOUND = "Brand not found";
     public static String PRODUCT_ALREADY_EXIST_ERROR_MSG = "Product already exist";
     public static String PRODUCT_NOT_FOUND = "Product not found";
+    public static String PRODUCT_VARIANT_ALREADY_EXIST_ERROR_MSG = "Product Variant already exist";
+    public static String PRODUCT_VARIANT_NOT_FOUND = "Product Variant not found";
+
 
 
     /* Microservice level Error Codes */

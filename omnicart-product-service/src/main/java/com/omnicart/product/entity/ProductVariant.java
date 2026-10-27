@@ -21,4 +21,16 @@ public class ProductVariant extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
+
+    @Column(name = "price")
+    private double price;
+
+    @Column(name = "discount")
+    private double discount;
+
+    @Column(name = "is_active")
+    private boolean isActive;
+
+    @Column(name = "product_attributes")
+    private String productAttributes;
 }
