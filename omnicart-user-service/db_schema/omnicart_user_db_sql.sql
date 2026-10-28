@@ -11,14 +11,20 @@ select * from permissions;
 
 /*
 insert into permissions(permission_code, description, created_at, updated_at) values('CREATE_PRODUCT', 'Create Product Permission', current_timestamp(), current_timestamp());
+insert into permissions(permission_code, description, created_at, updated_at) values('READ_PRODUCT', 'Get Product Permission', current_timestamp(), current_timestamp());
 insert into permissions(permission_code, description, created_at, updated_at) values('UPDATE_PRODUCT', 'Update Product Permission', current_timestamp(), current_timestamp());
 insert into permissions(permission_code, description, created_at, updated_at) values('DELETE_PRODUCT', 'Delete Product Permission', current_timestamp(), current_timestamp());
-insert into permissions(permission_code, description, created_at, updated_at) values('GET_PRODUCT', 'Get Product Permission', current_timestamp(), current_timestamp());
 
 insert into permissions(permission_code, description, created_at, updated_at) values('CREATE_BRAND', 'Create Brand Permission', current_timestamp(), current_timestamp());
+insert into permissions(permission_code, description, created_at, updated_at) values('READ_BRAND', 'Get Brand Permission', current_timestamp(), current_timestamp());
 insert into permissions(permission_code, description, created_at, updated_at) values('UPDATE_BRAND', 'Update Brand Permission', current_timestamp(), current_timestamp());
 insert into permissions(permission_code, description, created_at, updated_at) values('DELETE_BRAND', 'Delete Brand Permission', current_timestamp(), current_timestamp());
-insert into permissions(permission_code, description, created_at, updated_at) values('READ_BRAND', 'Get Brand Permission', current_timestamp(), current_timestamp());
+
+insert into permissions(permission_code, description, created_at, updated_at) values('CREATE_INVENTORY', 'Create Inventory Permission', current_timestamp(), current_timestamp());
+insert into permissions(permission_code, description, created_at, updated_at) values('READ_INVENTORY', 'Get Inventory Permission', current_timestamp(), current_timestamp());
+insert into permissions(permission_code, description, created_at, updated_at) values('UPDATE_INVENTORY', 'Update Inventory Permission', current_timestamp(), current_timestamp());
+insert into permissions(permission_code, description, created_at, updated_at) values('DELETE_INVENTORY', 'Delete Inventory Permission', current_timestamp(), current_timestamp());
+
 */
 
 
@@ -38,12 +44,17 @@ insert into role_permissions(role_id, permission_id, created_at, updated_at) val
 insert into role_permissions(role_id, permission_id, created_at, updated_at) values(1, 3, current_timestamp(), current_time());
 insert into role_permissions(role_id, permission_id, created_at, updated_at) values(1, 4, current_timestamp(), current_time());
 
+insert into role_permissions(role_id, permission_id, created_at, updated_at) values(2, 2, current_timestamp(), current_time());
+
 insert into role_permissions(role_id, permission_id, created_at, updated_at) values(1, 5, current_timestamp(), current_time());
 insert into role_permissions(role_id, permission_id, created_at, updated_at) values(1, 6, current_timestamp(), current_time());
 insert into role_permissions(role_id, permission_id, created_at, updated_at) values(1, 7, current_timestamp(), current_time());
 insert into role_permissions(role_id, permission_id, created_at, updated_at) values(1, 8, current_timestamp(), current_time());
 
-insert into role_permissions(role_id, permission_id, created_at, updated_at) values(2, 2, current_timestamp(), current_time());
+insert into role_permissions(role_id, permission_id, created_at, updated_at) values(3, 9, current_timestamp(), current_time());
+insert into role_permissions(role_id, permission_id, created_at, updated_at) values(3, 10, current_timestamp(), current_time());
+insert into role_permissions(role_id, permission_id, created_at, updated_at) values(3, 11, current_timestamp(), current_time());
+insert into role_permissions(role_id, permission_id, created_at, updated_at) values(3, 12, current_timestamp(), current_time());
 */
 
 select * from api_permissions;
@@ -59,3 +70,8 @@ VALUES
     ('GET',    '/api/v1/products',     2,    TRUE, current_timestamp(), current_timestamp()),
     ('GET',    '/api/v1/products/{id}', 2,    TRUE, current_timestamp(), current_timestamp());
 */
+
+select * from permissions p inner join role_permissions rp on p.id = rp.permission_id where rp.role_id=3;
+
+select * from vendor_details;
+
