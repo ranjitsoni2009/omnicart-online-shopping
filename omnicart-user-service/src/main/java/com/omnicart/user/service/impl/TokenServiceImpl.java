@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.security.PrivateKey;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -41,7 +42,7 @@ public class TokenServiceImpl implements ITokenService {
                     .and()
                 .issuer(properties.getIssuer())
                 .subject(String.valueOf(customUserDetails.getUserId()))
-                .audience().add(properties.getAudiences())
+                .audience().add(Arrays.asList(properties.getAudiences()))
                     .and()
                 .issuedAt(currentTime)
                 .expiration(expiryTime)

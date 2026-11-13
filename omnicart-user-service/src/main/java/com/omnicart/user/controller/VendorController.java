@@ -3,11 +3,13 @@ package com.omnicart.user.controller;
 import com.omnicart.user.dto.request.CreateVendorRequestDto;
 import com.omnicart.user.dto.request.UpdateVendorRequestDto;
 import com.omnicart.user.dto.response.VendorResponseDto;
+import com.omnicart.user.exception.CustomBusinessException;
 import com.omnicart.user.service.IVendorService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,14 +27,15 @@ public class VendorController {
 
     private final IVendorService vendorService;
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'VENDOR')")
     @PostMapping
-    public ResponseEntity<VendorResponseDto> registerVendor(@Validated @RequestBody CreateVendorRequestDto createVendorRequestDto) {
+    public ResponseEntity<VendorResponseDto> registerVendor(@Validated @RequestBody CreateVendorRequestDto createVendorRequestDto) throws CustomBusinessException {
         VendorResponseDto vendorResponseDto = vendorService.registerVendor(createVendorRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(vendorResponseDto);
     }
 
     @PutMapping
-    public ResponseEntity<VendorResponseDto> updateVendorRegistration(@RequestBody UpdateVendorRequestDto updateVendorRequestDto) {
+    public ResponseEntity<VendorResponseDto> updateVendorRegistration(@RequestBody UpdateVendorRequestDto updateVendorRequestDto) throws CustomBusinessException {
         VendorResponseDto vendorResponseDto = vendorService.updateVendorRegistration(updateVendorRequestDto);
         return ResponseEntity.ok(vendorResponseDto);
     }
@@ -44,13 +47,13 @@ public class VendorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<VendorResponseDto> getVendor(@PathVariable("id") long vendorId) {
+    public ResponseEntity<VendorResponseDto> getVendor(@PathVariable("id") long vendorId) throws CustomBusinessException {
         VendorResponseDto vendorResponseDto = vendorService.getVendor(vendorId);
         return ResponseEntity.ok(vendorResponseDto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteVendor(@PathVariable("id") long vendorId) {
+    public ResponseEntity<Void> deleteVendor(@PathVariable("id") long vendorId) throws CustomBusinessException {
         vendorService.deleteVendor(vendorId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

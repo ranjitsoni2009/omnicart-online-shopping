@@ -25,6 +25,10 @@ insert into permissions(permission_code, description, created_at, updated_at) va
 insert into permissions(permission_code, description, created_at, updated_at) values('UPDATE_INVENTORY', 'Update Inventory Permission', current_timestamp(), current_timestamp());
 insert into permissions(permission_code, description, created_at, updated_at) values('DELETE_INVENTORY', 'Delete Inventory Permission', current_timestamp(), current_timestamp());
 
+insert into permissions(permission_code, description, created_at, updated_at) values('CREATE_VENDOR', 'Create Vendor Permission', current_timestamp(), current_timestamp());
+insert into permissions(permission_code, description, created_at, updated_at) values('READ_VENDOR', 'Get Vendor Permission', current_timestamp(), current_timestamp());
+insert into permissions(permission_code, description, created_at, updated_at) values('UPDATE_VENDOR', 'Update Vendor Permission', current_timestamp(), current_timestamp());
+insert into permissions(permission_code, description, created_at, updated_at) values('DELETE_VENDOR', 'Delete Vendor Permission', current_timestamp(), current_timestamp());
 */
 
 
@@ -55,6 +59,9 @@ insert into role_permissions(role_id, permission_id, created_at, updated_at) val
 insert into role_permissions(role_id, permission_id, created_at, updated_at) values(3, 10, current_timestamp(), current_time());
 insert into role_permissions(role_id, permission_id, created_at, updated_at) values(3, 11, current_timestamp(), current_time());
 insert into role_permissions(role_id, permission_id, created_at, updated_at) values(3, 12, current_timestamp(), current_time());
+
+insert into role_permissions(role_id, permission_id, created_at, updated_at) values(3, 13, current_timestamp(), current_time());
+insert into role_permissions(role_id, permission_id, created_at, updated_at) values(3, 15, current_timestamp(), current_time());
 */
 
 select * from api_permissions;

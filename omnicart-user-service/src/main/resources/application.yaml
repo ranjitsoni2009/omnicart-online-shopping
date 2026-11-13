@@ -3,7 +3,7 @@ spring:
     name: omnicart-user-service
 
   datasource:
-    url: jdbc:mysql://localhost:3306/omnicart_user_db?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/omnicart_user_db?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -16,12 +16,15 @@ omnicart:
   security:
     jwt:
       issuer: https://auth.omnicart.example
-      audiences: omnicart-product-service
+      audiences:
+        - omnicart-user-service
+        - omnicart-product-service
       access-token-ttl: 600000
       active-key-id: omnicart-key-1
       private-key-location: ${JWT_PRIVATE_KEY_LOCATION}
       refresh-token-bytes: 32
       refresh-token-expiry: 7d
+      public-key-location: ${JWT_PUBLIC_KEY_LOCATION}
 
 
 

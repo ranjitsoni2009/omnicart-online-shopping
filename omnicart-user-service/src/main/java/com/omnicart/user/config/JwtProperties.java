@@ -17,10 +17,8 @@ import org.springframework.validation.annotation.Validated;
 @Setter
 public class JwtProperties {
 
-
     private String issuer;
-    private String audiences;
+    private String[] audiences;
     private String accessTokenTtl;
     private String activeKeyId;
-
 }

@@ -21,11 +21,16 @@ public class OmniCartUserConstant {
     public static String USER_NOT_FOUND_ERROR_CODE = "2003";
     public static String USER_SESSION_NOT_FOUND_ERROR_CODE = "2004";
     public static String INVALID_SESSION_ERROR_CODE = "2005";
+    public static String VENDOR_ALREADY_REGISTERED_ERROR_CODE = "2006";
+    public static String VENDOR_NOT_FOUND_ERROR_CODE = "2007";
 
     public static String USER_ALREADY_REGISTERED_ERROR_MSG = "User already registered with given request";
     public static String USER_NOT_FOUND = "User not found";
     public static String USER_SESSION_NOT_FOUND = "User Session not found";
     public static String INVALID_SESSION = "Invalid Session";
+
+    public static String VENDOR_ALREADY_REGISTERED_ERROR_MSG = "Vendor already registered";
+    public static String VENDOR_NOT_FOUND = "User not found";
 
     /* Microservice level Error Codes */
 }
