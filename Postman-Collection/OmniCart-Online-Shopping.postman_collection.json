@@ -1,0 +1,893 @@
+{
+  "info": {
+    "_postman_id": "49530d9f-9094-43c0-90a5-8bff3cb876db",
+    "name": "OmniCart-Online-Shopping",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "518251"
+  },
+  "item": [
+    {
+      "name": "User-Service",
+      "item": [
+        {
+          "name": "Vendor",
+          "item": [
+            {
+              "name": "Create Vendor",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"businessName\": \"Acme Corporation\",\r\n  \"registrationNumber\": \"REG123456789\",\r\n  \"contactNumber\": \"+1234567890\",\r\n  \"address\": \"123 Main Street, Suite 100\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{user.service.server.port}}/omnicart-user-service/api/vendors",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{user.service.server.port}}",
+                  "path": [
+                    "omnicart-user-service",
+                    "api",
+                    "vendors"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "user",
+          "item": [
+            {
+              "name": "Register",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"firstName\": \"Nicky\",\r\n    \"lastName\": \"Soan\",\r\n    \"emailId\": \"nicky@gmail.com\",\r\n    \"phoneNumber\": \"9876543213\",\r\n    \"password\": \"pass123\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{user.service.server.port}}/omnicart-user-service/api/users/register",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{user.service.server.port}}",
+                  "path": [
+                    "omnicart-user-service",
+                    "api",
+                    "users",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Refresh-Token",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "refresh-token",
+                    "value": "EmvgwJYTBauFtO23yCYsbtf6QLtsreI42TSFJTW0A0E"
+                  },
+                  {
+                    "key": "",
+                    "value": ""
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:{{user.service.server.port}}/omnicart-user-service/api/auth/refresh-access-token",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{user.service.server.port}}",
+                  "path": [
+                    "omnicart-user-service",
+                    "api",
+                    "auth",
+                    "refresh-access-token"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Login",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "// Parse the response body\nconst jsonData = pm.response.json();\n\n// Extract and set the environment variable\npm.environment.set(\"access_token\", jsonData.accessToken);\n\n// Add basic assertions\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response has accessToken\", function () {\n    pm.expect(jsonData).to.have.property(\"accessToken\");\n});\n\npm.test(\"Response has tokenType\", function () {\n    pm.expect(jsonData).to.have.property(\"tokenType\", \"Bearer\");\n});"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"username\":\"rudra@gmail.com\",\n    \"password\":\"pass123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{user.service.server.port}}/omnicart-user-service/api/auth/login",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{user.service.server.port}}",
+                  "path": [
+                    "omnicart-user-service",
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Product-Service",
+      "item": [
+        {
+          "name": "Brand",
+          "item": [
+            {
+              "name": "Create Brand",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\" : \"Raymond\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{product.service.server.port}}/api/brands",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{product.service.server.port}}",
+                  "path": [
+                    "api",
+                    "brands"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Brands",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\" : \"Raymond\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{product.service.server.port}}/api/brands/1/10",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{product.service.server.port}}",
+                  "path": [
+                    "api",
+                    "brands",
+                    "1",
+                    "10"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Brand",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\" : \"Raymond\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{product.service.server.port}}/api/brands/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{product.service.server.port}}",
+                  "path": [
+                    "api",
+                    "brands",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Brand",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 1,\r\n    \"name\" : \"Lenovo\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{product.service.server.port}}/api/brands",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{product.service.server.port}}",
+                  "path": [
+                    "api",
+                    "brands"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Brand",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{product.service.server.port}}/api/brands/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{product.service.server.port}}",
+                  "path": [
+                    "api",
+                    "brands",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Category",
+          "item": [
+            {
+              "name": "Create Category",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"Furniture\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{product.service.server.port}}/api/categories",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{product.service.server.port}}",
+                  "path": [
+                    "api",
+                    "categories"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Category",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"id\": 4,\r\n  \"name\": \"Electronics\",\r\n  \"brandMap\": {\r\n    \"1\": true\r\n  }\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{product.service.server.port}}/api/categories",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{product.service.server.port}}",
+                  "path": [
+                    "api",
+                    "categories"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Categories",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"id\": 4,\r\n  \"name\": \"Electronics\",\r\n  \"brandMap\": {\r\n    \"1\": true\r\n  }\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{product.service.server.port}}/api/categories/0/5",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{product.service.server.port}}",
+                  "path": [
+                    "api",
+                    "categories",
+                    "0",
+                    "5"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Category",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"id\": 4,\r\n  \"name\": \"Electronics\",\r\n  \"brandMap\": {\r\n    \"1\": true\r\n  }\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{product.service.server.port}}/api/categories/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{product.service.server.port}}",
+                  "path": [
+                    "api",
+                    "categories",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Category",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"id\": 4,\r\n  \"name\": \"Electronics\",\r\n  \"brandMap\": {\r\n    \"1\": true\r\n  }\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{product.service.server.port}}/api/categories/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{product.service.server.port}}",
+                  "path": [
+                    "api",
+                    "categories",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Product",
+          "item": [
+            {
+              "name": "Create Product",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"Furniture\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{product.service.server.port}}/api/categories",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{product.service.server.port}}",
+                  "path": [
+                    "api",
+                    "categories"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Product",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Laptop-PC\",\r\n    \"description\": \"Handy version of PC\",\r\n    \"categoryId\": 1,\r\n    \"brandId\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{product.service.server.port}}/api/products",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{product.service.server.port}}",
+                  "path": [
+                    "api",
+                    "products"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Products",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"id\": 4,\r\n  \"name\": \"Electronics\",\r\n  \"brandMap\": {\r\n    \"1\": true\r\n  }\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{product.service.server.port}}/api/products/0/5",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{product.service.server.port}}",
+                  "path": [
+                    "api",
+                    "products",
+                    "0",
+                    "5"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Product",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"id\": 4,\r\n  \"name\": \"Electronics\",\r\n  \"brandMap\": {\r\n    \"1\": true\r\n  }\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{product.service.server.port}}/api/products/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{product.service.server.port}}",
+                  "path": [
+                    "api",
+                    "products",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Product Variant",
+          "item": [
+            {
+              "name": "Create Product Variant",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"productId\": 2,\r\n  \"skuId\": \"PROD-Elect-LT-001\",\r\n  \"price\": 50000,\r\n  \"discount\": 5,\r\n  \"productAttributes\":  \"[{\\\"key\\\":\\\"processor\\\",\\\"value\\\":{\\\"brand\\\":\\\"Intel\\\",\\\"model\\\":\\\"Core i7-13700H\\\",\\\"generation\\\":\\\"13th Gen\\\",\\\"cores\\\":14,\\\"threads\\\":20,\\\"base_clock_speed_ghz\\\":2.4,\\\"max_boost_speed_ghz\\\":5.0}},{\\\"key\\\":\\\"memory\\\",\\\"value\\\":{\\\"capacity_gb\\\":16,\\\"type\\\":\\\"DDR5\\\",\\\"speed_mhz\\\":4800,\\\"form_factor\\\":\\\"SO-DIMM\\\",\\\"is_upgradable\\\":true}},{\\\"key\\\":\\\"storage\\\",\\\"value\\\":{\\\"primary_capacity_gb\\\":1000,\\\"type\\\":\\\"NVMe M.2 SSD\\\",\\\"interface\\\":\\\"PCIe Gen 4x4\\\",\\\"secondary_capacity_gb\\\":null}},{\\\"key\\\":\\\"display\\\",\\\"value\\\":{\\\"size_inches\\\":15.6,\\\"resolution\\\":\\\"2560x1440\\\",\\\"panel_type\\\":\\\"IPS\\\",\\\"refresh_rate_hz\\\":165,\\\"aspect_ratio\\\":\\\"16:9\\\",\\\"brightness_nits\\\":350,\\\"surface\\\":\\\"Anti-glare\\\",\\\"touchscreen\\\":false}},{\\\"key\\\":\\\"graphics\\\",\\\"value\\\":{\\\"type\\\":\\\"Dedicated\\\",\\\"brand\\\":\\\"NVIDIA\\\",\\\"model\\\":\\\"GeForce RTX 4060\\\",\\\"vram_gb\\\":8,\\\"vram_type\\\":\\\"GDDR6\\\"}},{\\\"key\\\":\\\"battery_and_power\\\",\\\"value\\\":{\\\"capacity_wh\\\":76,\\\"cell_count\\\":4,\\\"charging_wattage\\\":230,\\\"estimated_life_hours\\\":7.5}},{\\\"key\\\":\\\"connectivity\\\",\\\"value\\\":{\\\"wifi_version\\\":\\\"Wi-Fi 6E (802.11ax)\\\",\\\"bluetooth_version\\\":\\\"5.3\\\",\\\"ports\\\":[{\\\"type\\\":\\\"USB-C Thunderbolt 4\\\",\\\"count\\\":1,\\\"power_delivery\\\":true},{\\\"type\\\":\\\"USB 3.2 Gen 2 Type-A\\\",\\\"count\\\":2,\\\"power_delivery\\\":false},{\\\"type\\\":\\\"HDMI 2.1\\\",\\\"count\\\":1,\\\"power_delivery\\\":false},{\\\"type\\\":\\\"3.5mm Audio Combo Jack\\\",\\\"count\\\":1,\\\"power_delivery\\\":false},{\\\"type\\\":\\\"RJ-45 Ethernet\\\",\\\"count\\\":1,\\\"power_delivery\\\":false}]}},{\\\"key\\\":\\\"design_and_dimensions\\\",\\\"value\\\":{\\\"weight_kg\\\":2.1,\\\"color\\\":\\\"Storm Grey\\\",\\\"chassis_material\\\":\\\"Aluminum top, PC-ABS bottom\\\",\\\"width_mm\\\":359.6,\\\"depth_mm\\\":264.8,\\\"height_mm\\\":22.1}},{\\\"key\\\":\\\"operating_system\\\",\\\"value\\\":{\\\"name\\\":\\\"Windows 11\\\",\\\"edition\\\":\\\"Home\\\",\\\"architecture\\\":\\\"64-bit\\\"}},{\\\"key\\\":\\\"additional_features\\\",\\\"value\\\":{\\\"keyboard_backlight\\\":\\\"RGB (4-zone)\\\",\\\"webcam_resolution\\\":\\\"1080p FHD\\\",\\\"privacy_shutter\\\":true,\\\"biometrics\\\":\\\"Fingerprint reader\\\"}}]\"\r\n\r\n}\r\n\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{product.service.server.port}}/api/product-variants",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{product.service.server.port}}",
+                  "path": [
+                    "api",
+                    "product-variants"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get ProductVariants",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"id\": 4,\r\n  \"name\": \"Electronics\",\r\n  \"brandMap\": {\r\n    \"1\": true\r\n  }\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{product.service.server.port}}/api/products/0/5",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{product.service.server.port}}",
+                  "path": [
+                    "api",
+                    "products",
+                    "0",
+                    "5"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get ProductVariant",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"id\": 4,\r\n  \"name\": \"Electronics\",\r\n  \"brandMap\": {\r\n    \"1\": true\r\n  }\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{product.service.server.port}}/api/product-variants/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{product.service.server.port}}",
+                  "path": [
+                    "api",
+                    "product-variants",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete ProductVariant",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{product.service.server.port}}/api/product-variants/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{product.service.server.port}}",
+                  "path": [
+                    "api",
+                    "product-variants",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
