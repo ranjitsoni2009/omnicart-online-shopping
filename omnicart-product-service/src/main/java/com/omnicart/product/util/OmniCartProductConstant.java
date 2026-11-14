@@ -25,6 +25,10 @@ public class OmniCartProductConstant {
     public static String PRODUCT_NOT_FOUND_ERROR_CODE = "3004";
     public static String PRODUCT_VARIANT_ALREADY_EXIST_ERROR_CODE = "3005";
     public static String PRODUCT_VARIANT_NOT_FOUND_ERROR_CODE = "3006";
+    public static String INVENTORY_ALREADY_EXIST_ERROR_CODE = "3007";
+    public static String INVENTORY_NOT_FOUND_ERROR_CODE = "3008";
+    public static String INVENTORY_ACCESS_DENIED_ERROR_CODE = "3009";
+    public static String INVALID_INVENTORY_QUANTITY_ERROR_CODE = "3010";
 
     public static String BRAND_ALREADY_EXIST_ERROR_MSG = "Brand already exist";
     public static String BRAND_NOT_FOUND = "Brand not found";
@@ -34,6 +38,10 @@ public class OmniCartProductConstant {
     public static String PRODUCT_NOT_FOUND = "Product not found";
     public static String PRODUCT_VARIANT_ALREADY_EXIST_ERROR_MSG = "Product Variant already exist";
     public static String PRODUCT_VARIANT_NOT_FOUND = "Product Variant not found";
+    public static String INVENTORY_ALREADY_EXIST_ERROR_MSG = "Inventory already exists for this product variant and vendor";
+    public static String INVENTORY_NOT_FOUND = "Inventory not found";
+    public static String INVENTORY_ACCESS_DENIED = "You are not allowed to access this inventory";
+    public static String INVALID_INVENTORY_QUANTITY = "Inventory quantity cannot be less than reserved quantity";
 
 
 
