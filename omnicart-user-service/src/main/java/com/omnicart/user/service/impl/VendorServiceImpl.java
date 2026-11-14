@@ -7,7 +7,6 @@ import com.omnicart.user.entity.User;
 import com.omnicart.user.entity.VendorDetail;
 import com.omnicart.user.exception.CustomBusinessException;
 import com.omnicart.user.mapper.GenericMapper;
-import com.omnicart.user.repo.IUserRepo;
 import com.omnicart.user.repo.IVendorRepo;
 import com.omnicart.user.service.IUserService;
 import com.omnicart.user.service.IVendorService;
@@ -17,8 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
