@@ -3,10 +3,13 @@ package com.omnicart.user.service.impl;
 import com.omnicart.user.dto.request.CreateVendorRequestDto;
 import com.omnicart.user.dto.request.UpdateVendorRequestDto;
 import com.omnicart.user.dto.response.VendorResponseDto;
+import com.omnicart.user.entity.User;
 import com.omnicart.user.entity.VendorDetail;
 import com.omnicart.user.exception.CustomBusinessException;
 import com.omnicart.user.mapper.GenericMapper;
+import com.omnicart.user.repo.IUserRepo;
 import com.omnicart.user.repo.IVendorRepo;
+import com.omnicart.user.service.IUserService;
 import com.omnicart.user.service.IVendorService;
 import com.omnicart.user.util.OmniCartUserConstant;
 import com.omnicart.user.util.OmniCartUtil;
@@ -14,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -27,9 +32,10 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class IVendorServiceImpl implements IVendorService  {
+public class VendorServiceImpl implements IVendorService  {
 
     private final IVendorRepo vendorRepo;
+    private final IUserService userService;
     private final GenericMapper genericMapper;
 
     @Override
@@ -41,11 +47,18 @@ public class IVendorServiceImpl implements IVendorService  {
                     OmniCartUtil.getErrorCode(OmniCartUserConstant.BUSINESS_EXCEPTION_TAG, OmniCartUserConstant.VENDOR_ALREADY_REGISTERED_ERROR_CODE));
         }
 
+        User user = userService.getUser();
+
         VendorDetail vendorDetail = genericMapper.toEntity(vendorRequestDto, VendorDetail.class);
         vendorDetail.setCreatedAt(Instant.now());
         vendorDetail.setUpdatedAt(Instant.now());
+        vendorDetail.setUser(user);
+        vendorDetail.setActive(true);
+        vendorDetail = vendorRepo.save(vendorDetail);
         return genericMapper.toDto(vendorDetail, VendorResponseDto.class);
     }
+
+
 
     @Override
     public VendorResponseDto updateVendorRegistration(UpdateVendorRequestDto vendorRequestDto) throws CustomBusinessException {

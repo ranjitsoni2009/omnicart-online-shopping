@@ -4,7 +4,6 @@ import com.omnicart.user.config.JwtProperties;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -22,13 +21,7 @@ public class JwtAuthService {
 
     private final JwtProperties jwtProperties;
 
-    public boolean isTokenValid(Claims claims, UserDetails userDetails) {
-
-        if (!claims.getSubject().equals(userDetails.getUsername())) {
-            log.error("Username mismatched");
-            return false;
-        }
-
+    public boolean isTokenValid(Claims claims) {
         Date currentTime = new Date();
         if (currentTime.after(claims.getExpiration())) {
             log.error("Token Expired");
@@ -46,17 +39,12 @@ public class JwtAuthService {
         }
 
         Set<String> audiences = claims.getAudience();
-
         boolean isAudienceMatched = Arrays.stream(jwtProperties.getAudiences()).anyMatch(audiences::contains);
-        if (isAudienceMatched) {
+        if (!isAudienceMatched) {
             log.error("Audience mismatched");
             return false;
         }
 
-        if (!userDetails.isEnabled() || !userDetails.isAccountNonLocked()) {
-            log.error("Either User is disabled or account locked");
-            return false;
-        }
         return true;
     }
 }

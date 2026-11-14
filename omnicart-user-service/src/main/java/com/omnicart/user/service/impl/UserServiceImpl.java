@@ -10,6 +10,8 @@ import com.omnicart.user.service.IUserService;
 import com.omnicart.user.util.OmniCartUserConstant;
 import com.omnicart.user.util.OmniCartUtil;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -51,5 +53,17 @@ public class UserServiceImpl implements IUserService {
         //convert back response entity to response dto
         //return response dto
         return userAdapter.convertEntityToUserRegisterResponse(user);
+    }
+
+    @Override
+    public User getUser() throws CustomBusinessException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        assert authentication != null;
+        long userId = Long.parseLong(authentication.getName());
+        return userRepo.findById(userId)
+                .orElseThrow(() ->
+                        new CustomBusinessException(
+                                OmniCartUserConstant.USER_NOT_FOUND_ERROR_MSG,
+                                OmniCartUtil.getErrorCode(OmniCartUserConstant.BUSINESS_EXCEPTION_TAG, OmniCartUserConstant.USER_NOT_FOUND_ERROR_CODE)));
     }
 }

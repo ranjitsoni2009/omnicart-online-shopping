@@ -8,9 +8,13 @@ spring:
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+server:
+  servlet:
+    context-path: /omnicart-user-service
+
 logging:
   level:
-    org.springframework.security: ERROR
+    org.springframework.security: INFO
 
 omnicart:
   security:

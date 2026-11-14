@@ -33,9 +33,9 @@ public class UserSessionServiceImpl implements IUserSessionService {
 
         User user = userRepo.findById(userId)
                                 .orElseThrow(() ->
-                                        new CustomBusinessException("User Not Found",
+                                        new CustomBusinessException(OmniCartUserConstant.USER_NOT_FOUND_ERROR_MSG,
                                                 OmniCartUtil.getErrorCode(
-                                                        OmniCartUserConstant.BUSINESS_EXCEPTION_TAG, OmniCartUserConstant.USER_NOT_FOUND)));
+                                                        OmniCartUserConstant.BUSINESS_EXCEPTION_TAG, OmniCartUserConstant.USER_NOT_FOUND_ERROR_CODE)));
 
         UserSession userSession = UserSession.builder()
                 .user(user)

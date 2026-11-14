@@ -27,7 +27,7 @@ public class VendorController {
 
     private final IVendorService vendorService;
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'VENDOR')")
+    @PreAuthorize("hasAuthority('CREATE_VENDOR')")
     @PostMapping
     public ResponseEntity<VendorResponseDto> registerVendor(@Validated @RequestBody CreateVendorRequestDto createVendorRequestDto) throws CustomBusinessException {
         VendorResponseDto vendorResponseDto = vendorService.registerVendor(createVendorRequestDto);
