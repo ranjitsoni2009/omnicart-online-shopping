@@ -21,4 +21,6 @@ select * from products;
 
 select * from product_variants;
 
+select * from inventories;
+
 

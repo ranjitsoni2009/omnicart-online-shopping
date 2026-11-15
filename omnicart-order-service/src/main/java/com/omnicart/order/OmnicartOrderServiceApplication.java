@@ -9,5 +9,4 @@ public class OmnicartOrderServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(OmnicartOrderServiceApplication.class, args);
 	}
-
 }
