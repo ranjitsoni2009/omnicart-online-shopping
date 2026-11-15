@@ -1,3 +1,20 @@
 spring:
   application:
     name: omnicart-order-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/omnicart_order_db?useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: classpath:keys/public_key.pem
+
+server.port: 8082
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
