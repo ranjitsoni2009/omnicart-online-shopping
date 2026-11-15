@@ -18,4 +18,5 @@ public interface IInventoryService {
     List<InventoryResponseDto> getInventories(int pageNumber, int pageSize);
 
     void deleteInventory(long inventoryId) throws CustomBusinessException;
+    InventoryResponseDto getInventory(long productVariantId, long vendorId) throws CustomBusinessException;
 }

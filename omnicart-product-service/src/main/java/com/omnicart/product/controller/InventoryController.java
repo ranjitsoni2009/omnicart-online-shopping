@@ -38,8 +38,7 @@ public class InventoryController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UPDATE_INVENTORY')")
-    public ResponseEntity<InventoryResponseDto> updateInventory(@PathVariable long id,
-                                                                  @Valid @RequestBody UpdateInventoryRequestDto request)
+    public ResponseEntity<InventoryResponseDto> updateInventory(@PathVariable long id, @Valid @RequestBody UpdateInventoryRequestDto request)
             throws CustomBusinessException {
         return ResponseEntity.ok(inventoryService.updateInventory(id, request));
     }
@@ -63,5 +62,12 @@ public class InventoryController {
     public ResponseEntity<Void> deleteInventory(@PathVariable long id) throws CustomBusinessException {
         inventoryService.deleteInventory(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    @PreAuthorize("hasAuthority('READ_INVENTORY')")
+    public ResponseEntity<InventoryResponseDto> getInventory(@RequestParam("productVariantId") Long productVariantId, @RequestParam("vendorId") Long vendorId)
+            throws CustomBusinessException {
+        return ResponseEntity.ok(inventoryService.getInventory(productVariantId, vendorId));
     }
 }

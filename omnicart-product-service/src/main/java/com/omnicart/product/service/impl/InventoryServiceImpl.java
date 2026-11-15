@@ -21,6 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
+
+import static com.omnicart.product.util.OmniCartProductUtil.businessException;
 
 @Service
 @RequiredArgsConstructor
@@ -91,6 +94,15 @@ public class InventoryServiceImpl implements IInventoryService {
         inventoryRepo.save(inventory);
     }
 
+    @Override
+    public InventoryResponseDto getInventory(long productVariantId, long vendorId) throws CustomBusinessException {
+        Inventory inventory = inventoryRepo.findByProductVariantIdAndVendorId(productVariantId, vendorId)
+                                                .orElseThrow(() -> businessException(
+                                                        OmniCartProductConstant.INVENTORY_NOT_FOUND,
+                                                        OmniCartProductConstant.INVENTORY_NOT_FOUND_ERROR_CODE));
+        return toResponse(inventory);
+    }
+
     private Inventory getOwnedActiveInventory(long inventoryId) throws CustomBusinessException {
         Inventory inventory = inventoryRepo.findById(inventoryId)
                 .orElseThrow(() -> businessException(OmniCartProductConstant.INVENTORY_NOT_FOUND,
@@ -124,10 +136,5 @@ public class InventoryServiceImpl implements IInventoryService {
                 .availableQuantity(inventory.getQuantity() - inventory.getReservedQuantity())
                 .active(inventory.isActive())
                 .build();
-    }
-
-    private CustomBusinessException businessException(String message, String code) {
-        return new CustomBusinessException(message,
-                OmniCartProductUtil.getErrorCode(OmniCartProductConstant.BUSINESS_EXCEPTION_TAG, code));
     }
 }
