@@ -14,6 +14,7 @@ import com.omnicart.order.repo.ICartItemRepo;
 import com.omnicart.order.repo.IOrderRepo;
 import com.omnicart.order.service.IOrderService;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -59,20 +60,21 @@ public class OrderServiceImpl implements IOrderService {
         OrderItemProcessResult orderItemProcessResult = getOrderitemProcessResult(cartItems, now, order);
 
         order.setSubtotal(orderItemProcessResult.subTotal());
-        order.setDiscountAmount(orderItemProcessResult.totalDiscount());
+        order.setDiscountedAmount(orderItemProcessResult.totalDiscount());
         order.setTaxAmount(orderItemProcessResult.totalTax());
         order.setShippingCharges(BigDecimal.ZERO);
         order.setTotalAmount(orderItemProcessResult.subTotal().subtract(orderItemProcessResult.totalDiscount()).add(orderItemProcessResult.totalTax()));
 
-        transition(order, null, OrderStatus.PENDING_PAYMENT, customerId, "Order created");
+        transition(order, OrderStatus.PENDING_PAYMENT, customerId, "Order created");
         order = orderRepo.save(order);
 
-        List<InventoryPort.Reservation> reserve = cartItems.stream()
+        /*List<InventoryPort.Reservation> reserve = cartItems.stream()
                 .map(i -> new InventoryPort.Reservation(i.getProductVariantId(), i.getQuantity()))
                 .toList();
+
         inventory.reserve(order.getId(), reserve);
         payment.initiatePayment(order.getId(), order.getOrderNumber(), order.getTotalAmount());
-        notification.notify(customerId, order.getId(), order.getOrderStatus());
+        notification.notify(customerId, order.getId(), order.getOrderStatus());*/
         return dto(order);
     }
 
@@ -92,6 +94,7 @@ public class OrderServiceImpl implements IOrderService {
 
             OrderItem orderItem = new OrderItem();
             orderItem.setProductId(cartItem.getProductId());
+            orderItem.setProductVariantId(cartItem.getProductVariantId());
             orderItem.setVendorId(cartItem.getVendorId());
             orderItem.setProductName(cartItem.getProductName());
             orderItem.setSku(cartItem.getSku());
@@ -100,9 +103,9 @@ public class OrderServiceImpl implements IOrderService {
             orderItem.setDiscountPercentage(discountPercentage);
             orderItem.setTaxPercentage(taxPercentage);
 
-            BigDecimal discount = baseAmount.multiply(discountPercentage);
+            BigDecimal discount = baseAmount.multiply(discountPercentage).divide(BigDecimal.valueOf(100), RoundingMode.FLOOR);
             BigDecimal discountedAmount = baseAmount.subtract(discount);
-            BigDecimal tax = discountedAmount.multiply(taxPercentage);
+            BigDecimal tax = discountedAmount.multiply(taxPercentage).divide(BigDecimal.valueOf(100), RoundingMode.FLOOR);
             orderItem.setLineTotal(discountedAmount.add(tax));
             orderItem.setCreatedAt(now);
             orderItem.setUpdatedAt(now);
@@ -151,44 +154,41 @@ public class OrderServiceImpl implements IOrderService {
         Order o = found(id);
         own(o);
         return o.getStatusHistory().stream()
-                .map(h -> OrderStatusHistoryResponseDto.builder()
-                        .previousStatus(h.getPreviousStatus())
-                        .newStatus(h.getNewStatus())
-                        .changedBy(h.getChangedBy())
-                        .remarks(h.getRemarks())
-                        .createdAt(h.getCreatedAt())
+                .map(orderStatusHistory -> OrderStatusHistoryResponseDto.builder()
+                        .orderStatus(orderStatusHistory.getOrderStatus())
+                        .createdBy(orderStatusHistory.getCreatedBy())
+                        .remarks(orderStatusHistory.getRemarks())
+                        .createdAt(orderStatusHistory.getCreatedAt())
                         .build())
                 .toList();
     }
 
     @Transactional
-    public OrderResponseDto cancelOrder(long id, CancelOrderRequestDto r) {
-        Order o = found(id);
-        own(o);
+    public OrderResponseDto cancelOrder(long id, CancelOrderRequestDto requestDto) {
+        Order existingOrder = found(id);
+        own(existingOrder);
 
-        if (o.getOrderStatus() == OrderStatus.CANCELLED
-                || o.getOrderStatus() == OrderStatus.REFUND_INITIATED
-                || o.getOrderStatus() == OrderStatus.REFUNDED) {
-            return dto(o);
+        if (existingOrder.getOrderStatus() == OrderStatus.CANCELLED
+                || existingOrder.getOrderStatus() == OrderStatus.REFUND_INITIATED
+                || existingOrder.getOrderStatus() == OrderStatus.REFUNDED) {
+            return dto(existingOrder);
         }
 
-        if (!canCancel(o.getOrderStatus())) {
+        if (!canCancel(existingOrder.getOrderStatus())) {
             throw error("CANCELLATION_NOT_ALLOWED", "Order cannot be cancelled in its current status");
         }
 
-        OrderStatus prior = o.getOrderStatus();
-        transition(o, prior, OrderStatus.CANCELLED, getCustomerId(), r.getReason());
-        o.setCancellationReason(r.getReason());
-        o.setCancelledAt(Instant.now());
+        OrderStatus prior = existingOrder.getOrderStatus();
+        transition(existingOrder, OrderStatus.CANCELLED, getCustomerId(), requestDto.getReason());
 
-        if (o.getPaymentStatus() == PaymentStatus.SUCCESS) {
-            o.setPaymentStatus(PaymentStatus.REFUND_PENDING);
-            payment.requestRefund(o.getId(), o.getTotalAmount());
-            transition(o, OrderStatus.CANCELLED, OrderStatus.REFUND_INITIATED, getCustomerId(), "Refund requested");
+        if (existingOrder.getPaymentStatus() == PaymentStatus.SUCCESS) {
+            existingOrder.setPaymentStatus(PaymentStatus.REFUND_PENDING);
+            payment.requestRefund(existingOrder.getId(), existingOrder.getTotalAmount());
+            transition(existingOrder, OrderStatus.REFUND_INITIATED, getCustomerId(), "Refund requested");
         }
 
-        inventory.release(o.getId(), reservations(o));
-        return dto(orderRepo.save(o));
+        inventory.release(existingOrder.getId(), reservations(existingOrder));
+        return dto(orderRepo.save(existingOrder));
     }
 
     @Transactional
@@ -199,7 +199,7 @@ public class OrderServiceImpl implements IOrderService {
             throw error("INVALID_ORDER_STATUS", "Invalid order status transition");
         }
 
-        transition(o, o.getOrderStatus(), r.getStatus(), getCustomerId(), r.getRemarks());
+        transition(o, r.getStatus(), getCustomerId(), r.getRemarks());
 
         if (r.getStatus() == OrderStatus.PAYMENT_SUCCESS) {
             o.setPaymentStatus(PaymentStatus.SUCCESS);
@@ -218,14 +218,13 @@ public class OrderServiceImpl implements IOrderService {
         return dto(orderRepo.save(o));
     }
 
-    private void transition(Order order, OrderStatus before, OrderStatus after, long who, String remark) {
+    private void transition(Order order, OrderStatus after, long who, String remark) {
         order.setOrderStatus(after);
         order.setUpdatedAt(Instant.now());
 
         OrderStatusHistory h = new OrderStatusHistory();
-        h.setPreviousStatus(before);
-        h.setNewStatus(after);
-        h.setChangedBy(who);
+        h.setOrderStatus(after);
+        h.setCreatedBy(who);
         h.setRemarks(remark);
         h.setCreatedAt(Instant.now());
         h.setUpdatedAt(Instant.now());
@@ -291,27 +290,27 @@ public class OrderServiceImpl implements IOrderService {
         return new OrderBusinessException(c, m);
     }
 
-    private OrderResponseDto dto(Order o) {
+    private OrderResponseDto dto(Order order) {
         return OrderResponseDto.builder()
-                .id(o.getId())
-                .orderNumber(o.getOrderNumber())
-                .orderStatus(o.getOrderStatus())
-                .paymentStatus(o.getPaymentStatus())
-                .subtotal(o.getSubtotal())
-                .discountAmount(o.getDiscountAmount())
-                .taxAmount(o.getTaxAmount())
-                .shippingCharges(o.getShippingCharges())
-                .totalAmount(o.getTotalAmount())
-                .createdAt(o.getCreatedAt())
-                .items(o.getItems().stream()
-                        .map(i -> OrderResponseDto.Item.builder()
-                                .productId(i.getProductId())
-                                .vendorId(i.getVendorId())
-                                .productName(i.getProductName())
-                                .sku(i.getSku())
-                                .unitPrice(i.getUnitPrice())
-                                .quantity(i.getQuantity())
-                                .lineTotal(i.getLineTotal())
+                .id(order.getId())
+                .orderNumber(order.getOrderNumber())
+                .orderStatus(order.getOrderStatus())
+                .paymentStatus(order.getPaymentStatus())
+                .subtotal(order.getSubtotal())
+                .discountAmount(order.getDiscountedAmount())
+                .taxAmount(order.getTaxAmount())
+                .shippingCharges(order.getShippingCharges())
+                .totalAmount(order.getTotalAmount())
+                .createdAt(order.getCreatedAt())
+                .items(order.getItems().stream()
+                        .map(orderItem -> OrderResponseDto.Item.builder()
+                                .productId(orderItem.getProductId())
+                                .vendorId(orderItem.getVendorId())
+                                .productName(orderItem.getProductName())
+                                .sku(orderItem.getSku())
+                                .unitPrice(orderItem.getUnitPrice())
+                                .quantity(orderItem.getQuantity())
+                                .lineTotal(orderItem.getLineTotal())
                                 .build())
                         .toList())
                 .build();

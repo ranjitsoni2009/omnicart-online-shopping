@@ -41,11 +41,11 @@ public class Order extends BaseEntity {
     @Column(name = "payment_status", nullable = false, length = 24)
     private PaymentStatus paymentStatus;
 
-    @Column(name = "subtotal", nullable = false, precision = 19, scale = 2)
+    @Column(name = "sub_total", nullable = false, precision = 19, scale = 2)
     private BigDecimal subtotal;
 
-    @Column(name = "discount_amount", nullable = false, precision = 19, scale = 2)
-    private BigDecimal discountAmount;
+    @Column(name = "discounted_amount", nullable = false, precision = 19, scale = 2)
+    private BigDecimal discountedAmount;
 
     @Column(name = "tax_amount", nullable = false, precision = 19, scale = 2)
     private BigDecimal taxAmount;
@@ -61,15 +61,6 @@ public class Order extends BaseEntity {
 
     @Column(name = "billing_address_snapshot", nullable = false, length = 4000)
     private String billingAddressSnapshot;
-
-    @Column(name = "cancellation_reason", length = 1000)
-    private String cancellationReason;
-
-    @Column(name = "cancelled_at")
-    private Instant cancelledAt;
-
-    @Version
-    private long version;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();

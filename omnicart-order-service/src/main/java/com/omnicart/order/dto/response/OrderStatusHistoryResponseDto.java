@@ -9,9 +9,8 @@ import lombok.Getter;
 @Builder
 public class OrderStatusHistoryResponseDto {
 
-    private final OrderStatus previousStatus;
-    private final OrderStatus newStatus;
-    private final long changedBy;
+    private final OrderStatus orderStatus;
+    private final long createdBy;
     private final String remarks;
     private final Instant createdAt;
 }

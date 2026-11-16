@@ -24,16 +24,12 @@ public class OrderStatusHistory extends BaseEntity {
     private Order order;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "previous_status", length = 32)
-    private OrderStatus previousStatus;
+    @Column(name = "order_status", length = 32)
+    private OrderStatus orderStatus;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "new_status", nullable = false, length = 32)
-    private OrderStatus newStatus;
+    @Column(name = "created_by", nullable = false)
+    private long createdBy;
 
-    @Column(name = "changed_by", nullable = false)
-    private long changedBy;
-
-    @Column(length = 1000)
+    @Column(name = "remarks", length = 255)
     private String remarks;
 }

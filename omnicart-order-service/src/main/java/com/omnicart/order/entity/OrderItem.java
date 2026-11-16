@@ -24,6 +24,9 @@ public class OrderItem extends BaseEntity {
     @Column(name = "product_id", nullable = false)
     private long productId;
 
+    @Column(name = "product_variant_id", nullable = false)
+    private long productVariantId;
+
     @Column(name = "vendor_id", nullable = false)
     private long vendorId;
 
@@ -41,6 +44,7 @@ public class OrderItem extends BaseEntity {
 
     @Column(name= "discount_percentage", nullable = false, precision = 19, scale = 2)
     private BigDecimal discountPercentage;
+
     @Column(name = "tax_percentage", nullable = false, precision = 19, scale = 2)
     private BigDecimal taxPercentage;
 

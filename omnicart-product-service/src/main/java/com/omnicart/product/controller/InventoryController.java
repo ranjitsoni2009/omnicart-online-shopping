@@ -64,9 +64,9 @@ public class InventoryController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
+    @GetMapping("/{productVariantId}/{vendorId}")
     @PreAuthorize("hasAuthority('READ_INVENTORY')")
-    public ResponseEntity<InventoryResponseDto> getInventory(@RequestParam("productVariantId") Long productVariantId, @RequestParam("vendorId") Long vendorId)
+    public ResponseEntity<InventoryResponseDto> getInventory(@PathVariable Long productVariantId, @PathVariable Long vendorId)
             throws CustomBusinessException {
         return ResponseEntity.ok(inventoryService.getInventory(productVariantId, vendorId));
     }
