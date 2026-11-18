@@ -1,20 +1,23 @@
 package com.omnicart.order.feignclient.response;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 /**
  * Created by Ranjit Soni on 15-11-2026.
  * Author: ranjitsoni2009@gmail.com
  */
 @Getter
+@Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class InventoryResponse {
-    private final long id;
-    private final long productVariantId;
-    private final long vendorId;
-    private final long quantity;
-    private final long reservedQuantity;
-    private final long availableQuantity;
-    private final boolean active;
+    private long id;
+    private long productVariantId;
+    private long vendorId;
+    private long quantity;
+    private long reservedQuantity;
+    private long availableQuantity;
+    private boolean active;
 }

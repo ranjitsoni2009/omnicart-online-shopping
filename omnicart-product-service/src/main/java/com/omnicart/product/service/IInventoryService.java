@@ -1,6 +1,7 @@
 package com.omnicart.product.service;
 
 import com.omnicart.product.dto.request.CreateInventoryRequestDto;
+import com.omnicart.product.dto.request.ReserveInventoryQuantityRequestDto;
 import com.omnicart.product.dto.request.UpdateInventoryRequestDto;
 import com.omnicart.product.dto.response.InventoryResponseDto;
 import com.omnicart.product.exception.CustomBusinessException;
@@ -19,4 +20,6 @@ public interface IInventoryService {
 
     void deleteInventory(long inventoryId) throws CustomBusinessException;
     InventoryResponseDto getInventory(long productVariantId, long vendorId) throws CustomBusinessException;
+
+    List<InventoryResponseDto> reserveInventory(List<ReserveInventoryQuantityRequestDto> reserveInventoryRequests);
 }

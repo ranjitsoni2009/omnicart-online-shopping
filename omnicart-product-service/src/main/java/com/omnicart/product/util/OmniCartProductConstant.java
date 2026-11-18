@@ -7,6 +7,8 @@ package com.omnicart.product.util;
 public class OmniCartProductConstant {
 
     public static final String BEARER = "Bearer";
+    public static final String INSUFFICIENT_INVENTORY_ERROR_MSG = "Insufficient inventory available";
+    public static final String INSUFFICIENT_INVENTORY_ERROR_CODE = "3011";
     public static String ERROR_CODE = "OMNI_PRODUCT_%s_%s";
 
     /* Request level Error Codes */

@@ -11,16 +11,16 @@ VALUES
     ('GET',    '/api/v1/products/{id}', 2,    TRUE, current_timestamp(), current_timestamp());
 */
 
-select * from brands;
+select * from omnicart_product_db.brands;
 
-select * from categories;
+select * from omnicart_product_db.categories;
 
-select * from category_brands;
+select * from omnicart_product_db.category_brands;
 
-select * from products;
+select * from omnicart_product_db.products;
 
-select * from product_variants;
+select * from omnicart_product_db.product_variants;
 
-select * from inventories;
+select * from omnicart_product_db.inventories inv;
 
 

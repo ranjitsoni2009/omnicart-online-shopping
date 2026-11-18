@@ -2,6 +2,7 @@ package com.omnicart.order.exception.handler;
 
 import com.omnicart.order.dto.response.ErrorResponseDto;
 import com.omnicart.order.exception.CustomBusinessException;
+import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,5 +21,13 @@ public class BusinessExceptionHandler{
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(
                         ErrorResponseDto.builder().errorMessage(ex.getMessage()).errorCode(ex.getErrorCode()).build());
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<ErrorResponseDto> handleBusinessException(FeignException ex) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(
+                        ErrorResponseDto.builder().errorMessage(ex.getMessage()).build());
     }
 }

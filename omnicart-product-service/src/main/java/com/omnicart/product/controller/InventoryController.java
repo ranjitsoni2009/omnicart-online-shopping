@@ -1,11 +1,14 @@
 package com.omnicart.product.controller;
 
 import com.omnicart.product.dto.request.CreateInventoryRequestDto;
+import com.omnicart.product.dto.request.ReserveInventoryQuantityRequestDto;
 import com.omnicart.product.dto.request.UpdateInventoryRequestDto;
 import com.omnicart.product.dto.response.InventoryResponseDto;
 import com.omnicart.product.exception.CustomBusinessException;
 import com.omnicart.product.service.IInventoryService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -69,5 +73,11 @@ public class InventoryController {
     public ResponseEntity<InventoryResponseDto> getInventory(@PathVariable Long productVariantId, @PathVariable Long vendorId)
             throws CustomBusinessException {
         return ResponseEntity.ok(inventoryService.getInventory(productVariantId, vendorId));
+    }
+
+    @PutMapping("/reserve")
+    @PreAuthorize("hasAuthority('RESERVE_INVENTORY')")
+    public ResponseEntity<List<InventoryResponseDto>> reserveInventory(@NotNull @NotEmpty @RequestBody List<ReserveInventoryQuantityRequestDto> reserveInventoryRequests) {
+        return ResponseEntity.ok(inventoryService.reserveInventory(reserveInventoryRequests));
     }
 }

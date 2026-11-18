@@ -2,11 +2,14 @@ package com.omnicart.order.service.impl;
 
 import com.omnicart.order.dto.request.CancelOrderRequestDto;
 import com.omnicart.order.dto.request.CreateOrderRequestDto;
+import com.omnicart.order.dto.request.ReserveInventoryQuantityRequestDto;
 import com.omnicart.order.dto.request.UpdateOrderStatusRequestDto;
 import com.omnicart.order.dto.response.OrderResponseDto;
 import com.omnicart.order.dto.response.OrderStatusHistoryResponseDto;
 import com.omnicart.order.entity.*;
 import com.omnicart.order.exception.OrderBusinessException;
+import com.omnicart.order.feignclient.ProductServiceClient;
+import com.omnicart.order.feignclient.response.InventoryResponse;
 import com.omnicart.order.port.InventoryPort;
 import com.omnicart.order.port.NotificationPort;
 import com.omnicart.order.port.PaymentPort;
@@ -19,6 +22,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderServiceImpl implements IOrderService {
 
     private final IOrderRepo orderRepo;
@@ -36,6 +42,7 @@ public class OrderServiceImpl implements IOrderService {
     private final InventoryPort inventory;
     private final PaymentPort payment;
     private final NotificationPort notification;
+    private final ProductServiceClient productServiceClient;
 
     @Transactional
     public OrderResponseDto create(CreateOrderRequestDto createOrderRequestDto) {
@@ -46,6 +53,35 @@ public class OrderServiceImpl implements IOrderService {
             throw error("EMPTY_CART", "Cart is empty");
         }
 
+        Order order = createOrder(createOrderRequestDto, customerId, cartItems);
+        reserveInventory(cartItems);
+
+
+        /*List<InventoryPort.Reservation> reserve = cartItems.stream()
+                .map(i -> new InventoryPort.Reservation(i.getProductVariantId(), i.getQuantity()))
+                .toList();
+
+        inventory.reserve(order.getId(), reserve);
+        payment.initiatePayment(order.getId(), order.getOrderNumber(), order.getTotalAmount());
+        notification.notify(customerId, order.getId(), order.getOrderStatus());*/
+        return dto(order);
+    }
+
+    private void reserveInventory(List<CartItem> cartItems) {
+        List<ReserveInventoryQuantityRequestDto> reserveInventoryRequests = cartItems.stream()
+                .map(cartItem ->
+                        ReserveInventoryQuantityRequestDto.builder()
+                                .productVariantId(cartItem.getProductVariantId())
+                                .vendorId(cartItem.getVendorId())
+                                .reservedQuantity(cartItem.getQuantity())
+                                .cartItemId(cartItem.getId())
+                                .build())
+                .toList();
+        List<InventoryResponse> inventoryResponses = productServiceClient.reserveInventory(reserveInventoryRequests);
+        log.info("Updated Inventory Responses: {}", inventoryResponses);
+    }
+
+    private @NonNull Order createOrder(CreateOrderRequestDto createOrderRequestDto, long customerId, List<CartItem> cartItems) {
         Order order = new Order();
         Instant now = Instant.now();
         order.setOrderNumber("ORD-" + UUID.randomUUID().toString().replace("-", "").substring(0, 16).toUpperCase());
@@ -67,15 +103,7 @@ public class OrderServiceImpl implements IOrderService {
 
         transition(order, OrderStatus.PENDING_PAYMENT, customerId, "Order created");
         order = orderRepo.save(order);
-
-        /*List<InventoryPort.Reservation> reserve = cartItems.stream()
-                .map(i -> new InventoryPort.Reservation(i.getProductVariantId(), i.getQuantity()))
-                .toList();
-
-        inventory.reserve(order.getId(), reserve);
-        payment.initiatePayment(order.getId(), order.getOrderNumber(), order.getTotalAmount());
-        notification.notify(customerId, order.getId(), order.getOrderStatus());*/
-        return dto(order);
+        return order;
     }
 
     private OrderItemProcessResult getOrderitemProcessResult(List<CartItem> cartItems, Instant now, Order order) {

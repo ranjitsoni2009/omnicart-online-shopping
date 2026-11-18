@@ -1,6 +1,7 @@
 package com.omnicart.product.service.impl;
 
 import com.omnicart.product.dto.request.CreateInventoryRequestDto;
+import com.omnicart.product.dto.request.ReserveInventoryQuantityRequestDto;
 import com.omnicart.product.dto.request.UpdateInventoryRequestDto;
 import com.omnicart.product.dto.response.InventoryResponseDto;
 import com.omnicart.product.entity.Inventory;
@@ -10,8 +11,9 @@ import com.omnicart.product.repo.IInventoryRepo;
 import com.omnicart.product.repo.IProductVariantRepo;
 import com.omnicart.product.service.IInventoryService;
 import com.omnicart.product.util.OmniCartProductConstant;
-import com.omnicart.product.util.OmniCartProductUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -25,6 +27,7 @@ import java.util.Optional;
 
 import static com.omnicart.product.util.OmniCartProductUtil.businessException;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class InventoryServiceImpl implements IInventoryService {
@@ -96,17 +99,42 @@ public class InventoryServiceImpl implements IInventoryService {
 
     @Override
     public InventoryResponseDto getInventory(long productVariantId, long vendorId) throws CustomBusinessException {
-        Inventory inventory = inventoryRepo.findByProductVariantIdAndVendorId(productVariantId, vendorId)
-                                                .orElseThrow(() -> businessException(
-                                                        OmniCartProductConstant.INVENTORY_NOT_FOUND,
-                                                        OmniCartProductConstant.INVENTORY_NOT_FOUND_ERROR_CODE));
+        Inventory inventory = getInventoryByProductVariantIdAndVendorId(productVariantId, vendorId);
         return toResponse(inventory);
+    }
+
+    private @NonNull Inventory getInventoryByProductVariantIdAndVendorId(long productVariantId, long vendorId) throws CustomBusinessException {
+        return inventoryRepo.findByProductVariantIdAndVendorId(productVariantId, vendorId)
+                .orElseThrow(() -> businessException(
+                        OmniCartProductConstant.INVENTORY_NOT_FOUND,
+                        OmniCartProductConstant.INVENTORY_NOT_FOUND_ERROR_CODE));
+    }
+
+    @Transactional
+    @Override
+    public List<InventoryResponseDto> reserveInventory(List<ReserveInventoryQuantityRequestDto> reserveInventoryRequests) {
+
+        return reserveInventoryRequests.stream()
+                .map(request -> {
+                            try {
+                                Inventory inventory = getInventoryByProductVariantIdAndVendorId(request.getProductVariantId(), request.getVendorId());
+                                inventory.setUpdatedAt(Instant.now());
+                                inventory.setQuantity(inventory.getQuantity() - request.getReservedQuantity());
+                                inventory.setReservedQuantity(inventory.getReservedQuantity() + request.getReservedQuantity());
+                                return inventoryRepo.save(inventory);
+                            } catch (CustomBusinessException e) {
+                                log.error("Error while updating inventory for OrderId: {}, product variant ID: {}, vendor ID: {} and reserverQty: {}",
+                                        request.getCartItemId(), request.getProductVariantId(), request.getVendorId(), request.getReservedQuantity(), e);
+                                throw new RuntimeException(e);
+                            }
+                        })
+                .map(this::toResponse).toList();
     }
 
     private Inventory getOwnedActiveInventory(long inventoryId) throws CustomBusinessException {
         Inventory inventory = inventoryRepo.findById(inventoryId)
-                .orElseThrow(() -> businessException(OmniCartProductConstant.INVENTORY_NOT_FOUND,
-                        OmniCartProductConstant.INVENTORY_NOT_FOUND_ERROR_CODE));
+                .orElseThrow(() ->
+                        businessException(OmniCartProductConstant.INVENTORY_NOT_FOUND, OmniCartProductConstant.INVENTORY_NOT_FOUND_ERROR_CODE));;
         if (!inventory.isActive()) {
             throw businessException(OmniCartProductConstant.INVENTORY_NOT_FOUND,
                     OmniCartProductConstant.INVENTORY_NOT_FOUND_ERROR_CODE);
