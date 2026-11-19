@@ -57,11 +57,7 @@ public class OrderServiceImpl implements IOrderService {
         reserveInventory(cartItems);
 
 
-        /*List<InventoryPort.Reservation> reserve = cartItems.stream()
-                .map(i -> new InventoryPort.Reservation(i.getProductVariantId(), i.getQuantity()))
-                .toList();
-
-        inventory.reserve(order.getId(), reserve);
+        /*
         payment.initiatePayment(order.getId(), order.getOrderNumber(), order.getTotalAmount());
         notification.notify(customerId, order.getId(), order.getOrderStatus());*/
         return dto(order);
